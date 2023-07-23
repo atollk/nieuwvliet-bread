@@ -13,6 +13,8 @@
 <div>
     <h1>Warenkorb von {{ include.user_name }}</h1>
 
+    <!-- TODO: add home button -->
+
     <div>
         <button class="submit-button">Bestellung abschicken</button>
 
@@ -24,6 +26,7 @@
 
     {% for good in site.data.goods %}
 
+        <!-- TODO: make mobile friendly -->
         <tr class="good">
             <td>
                 <img src="../assets/{{ good.img }}"/>
@@ -49,7 +52,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript">
     $.get("https://getpantry.cloud/apiv1/pantry/3434fa84-88b8-41ad-8cfb-36088d6c14c1/basket/orders", function (data, status) {
-        const orders = data.{{ include.user_id }}Orders;
+        const orders = data.{{ include.user_id }}Orders ?? {};
         const inputs = $('input');
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].value = orders['b' + i] ?? 0;
