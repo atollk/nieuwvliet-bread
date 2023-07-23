@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Warenkorb von {{include.user_name}}</h1>
+
+<table class="goods-list">
+
+    {% for good in site.data.goods %}
+
+    <tr class="good">
+        <td>
+            <img src="../assets/{{ good.img }}"/>
+        </td>
+        <td>
+            <h2 class="good-name">{{ good.name }}</h2>
+        </td>
+        <td class="good-description">
+            <p>{{ good.description }}</p>
+        </td>
+        <td>
+            <div class="counter">
+                <span class="minus">-</span>
+                <input type="text" value="0"/>
+                <span class="plus">+</span>
+            </div>
+        </td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.minus').click(function () {
+            var $input = $(this).parent().find('input');
+            var count = parseInt($input.val()) - 1;
+            count = count < 0 ? 0 : count;
+            $input.val(count);
+            $input.change();
+            return false;
+        });
+        $('.plus').click(function () {
+            var $input = $(this).parent().find('input');
+            $input.val(parseInt($input.val()) + 1);
+            $input.change();
+            return false;
+        });
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,3 +1,13 @@
+---
+user_list:
+- KETAF
+- DoMoJoLi
+- Daniel
+- Sofia
+- Andreas
+- Hanni
+- Günther
+---
 <!DOCTYPE html>
 <html>
 
@@ -14,68 +24,18 @@
 
 <div class="user-picker-list">
 
-    <a href="orders/ketaf.html">
-        <div class="user-picker">
-            <img src="assets/KETAF.png">
-            <div class="user-name">
-                <h2> KETAF </h2>
-            </div>
-        </div>
-    </a>
+    {% for user in page.user_list %}
 
-    <a href="orders/domojoli.html">
-        <div class="user-picker">
-            <img src="assets/DoMoJoLi.png">
-            <div class="user-name">
-                <h2> DoMoJoLi </h2>
+        <a href="orders/{{ user | downcase }}.html">
+            <div class="user-picker">
+                <img src="assets/{{ user | downcase }}.png">
+                <div class="user-name">
+                    <h2> {{ user }} </h2>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
-    <a href="orders/daniel.html">
-        <div class="user-picker">
-            <img src="assets/daniel.png">
-            <div class="user-name">
-                <h2> Daniel </h2>
-            </div>
-        </div>
-    </a>
-
-    <a href="orders/sofia.html">
-        <div class="user-picker">
-            <img src="assets/sofia.png">
-            <div class="user-name">
-                <h2> Sofia </h2>
-            </div>
-        </div>
-    </a>
-
-    <a href="orders/andreas.html">
-        <div class="user-picker">
-            <img src="assets/andreas.png">
-            <div class="user-name">
-                <h2> Andreas </h2>
-            </div>
-        </div>
-    </a>
-
-    <a href="orders/hanni.html">
-        <div class="user-picker">
-            <img src="assets/hanni.png">
-            <div class="user-name">
-                <h2> Hanni </h2>
-            </div>
-        </div>
-    </a>
-
-    <a href="orders/guenther.html">
-        <div class="user-picker">
-            <img src="assets/guenther.png">
-            <div class="user-name">
-                <h2> Günther </h2>
-            </div>
-        </div>
-    </a>
+    {% endfor %}
 
 </div>
 

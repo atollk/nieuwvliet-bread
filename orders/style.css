@@ -14745,7 +14745,8 @@ a:focus {
 /*# sourceMappingURL=style.css.map */
 
 body {
-    background-color: #4e555b30;
+    background: url("../assets/bg3.png") repeat;
+    text-align: center;
 }
 
 h1 {
@@ -14754,13 +14755,24 @@ h1 {
 }
 
 .goods-list {
-    display: flex;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
     flex-direction: column;
+    border-collapse: separate;
+    border-spacing: 0 1em;
 }
 
 .good {
-    display: flex;
     margin-bottom: 20px;
+}
+
+.good td {
+    margin: auto 20px;
+}
+
+.good-description {
+    width: 500px;
 }
 
 span {
@@ -14795,6 +14807,6 @@ input {
 }
 
 .good img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
 }
