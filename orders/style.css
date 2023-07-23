@@ -14779,6 +14779,10 @@ span {
     cursor: pointer;
 }
 
+.counter {
+    flex-direction: column;
+}
+
 .number {
     margin: 100px;
 }

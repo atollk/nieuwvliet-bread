@@ -37,7 +37,7 @@
             <td>
                 <div class="counter">
                     <span class="minus">-</span>
-                    <input type="text" value="0"/>
+                    <input type="text" value=""/>
                     <span class="plus">+</span>
                 </div>
             </td>
@@ -58,8 +58,11 @@
 
     $(document).ready(function () {
         $('.minus').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) - 1;
+            const $input = $(this).parent().find('input');
+            const oldValue = $input.val();
+            if (oldValue === "")
+                return false;
+            let count = parseInt(oldValue) - 1;
             count = count < 0 ? 0 : count;
             $input.val(count);
             $input.change();
@@ -67,7 +70,10 @@
         });
         $('.plus').click(function () {
             var $input = $(this).parent().find('input');
-            $input.val(parseInt($input.val()) + 1);
+            const oldValue = $input.val();
+            if (oldValue === "")
+                return false;
+            $input.val(parseInt(oldValue) + 1);
             $input.change();
             return false;
         });
@@ -80,7 +86,12 @@
         const inputs = $('input');
         const orders = {};
         for (let i = 0; i < inputs.length; i++) {
-            orders['b' + i] = Number(inputs[i].value);
+            const v = inputs[i].value;
+            if (v === "") {
+                $('#submit-message').text("Fehler bei der Bestellung. Seite neu laden.");
+                return false;
+            }
+            orders['b' + i] = Number(v);
         }
         const data = {};
         data["{{ include.user_id }}Orders"] = orders;
