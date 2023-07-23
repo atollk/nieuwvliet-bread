@@ -90,7 +90,7 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             beforeSend: () => {
-                $('#submit-message').empty();
+                $('#submit-message').text("Bitte warten...");
             },
             success: () => {
                 $('#submit-message').text("Erfolgreich bestellt!");
