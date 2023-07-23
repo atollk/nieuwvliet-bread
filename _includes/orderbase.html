@@ -47,15 +47,41 @@
             count = count < 0 ? 0 : count;
             $input.val(count);
             $input.change();
+            storeData();
             return false;
         });
         $('.plus').click(function () {
             var $input = $(this).parent().find('input');
             $input.val(parseInt($input.val()) + 1);
             $input.change();
+            storeData();
             return false;
         });
+        $.get("https://getpantry.cloud/apiv1/pantry/3434fa84-88b8-41ad-8cfb-36088d6c14c1/basket/orders", function (data, status) {
+            const orders = data.andreasOrders;
+            const inputs = $('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = orders[i];
+            }
+        });
     });
+
+    function storeData() {
+        const inputs = $('input');
+        const orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (let i = 0; i < orders.length; i++) {
+            orders[i] = Number(inputs[i].value);
+        }
+        $.ajax({
+            type: "POST",
+            url: "https://getpantry.cloud/apiv1/pantry/3434fa84-88b8-41ad-8cfb-36088d6c14c1/basket/orders",
+            contentType: "application/json",
+            data: JSON.stringify({andreasOrders: orders}),
+            success: () => {
+                alert(orders);
+            }
+        });
+    }
 </script>
 
 </body>
