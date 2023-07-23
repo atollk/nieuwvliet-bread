@@ -14787,5 +14787,10 @@ h1 {
     color: black;
 }
 
+.order-summary-table {
+    border-collapse: separate;
+    border-spacing: 1em 1em;
+}
+
 
 
