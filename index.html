@@ -6,7 +6,7 @@ user_list:
 - Sofia
 - Andreas
 - Hanni
-- Günther
+- Guenther
 pantry_key: 3434fa84-88b8-41ad-8cfb-36088d6c14c1
 ---
 <!DOCTYPE html>
@@ -23,6 +23,14 @@ pantry_key: 3434fa84-88b8-41ad-8cfb-36088d6c14c1
 
 <h1>Wer bist du?</h1>
 
+<div style="text-align: center">
+    <a href="ordersum.html">
+        <h2>
+            Zur Bestellübersicht
+        </h2>
+    </a>
+</div>
+
 <div class="user-picker-list">
 
     {% for user in page.user_list %}
@@ -38,14 +46,6 @@ pantry_key: 3434fa84-88b8-41ad-8cfb-36088d6c14c1
 
     {% endfor %}
 
-</div>
-
-<div style="text-align: center">
-    <a href="ordersum.html">
-        <h2>
-            Zur Bestellübersicht
-        </h2>
-    </a>
 </div>
 
 </body>
