@@ -3,3 +3,4 @@
 /.bundle/
 /vendor/
 .idea
+node_modules
