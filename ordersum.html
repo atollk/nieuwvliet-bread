@@ -60,7 +60,7 @@ user_list:
 
         function processUser(user) {
             const orders = data[user + "Orders"] ?? {};
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 15; i++) {
                 const domId = "#order-count-" + user + "-" + (i + 1);
                 const o = orders["b" + i] ?? 0;
                 $(domId).text(o);
@@ -70,7 +70,7 @@ user_list:
         {% for user in page.user_list %}
         processUser("{{ user | downcase }}");
         {% endfor %}
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 15; i++) {
             $("#order-sum-" + (i + 1)).text(sum["b" + i]);
         }
     });
