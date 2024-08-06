@@ -51,7 +51,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript">
-    $.get("https://getpantry.cloud/apiv1/pantry/3434fa84-88b8-41ad-8cfb-36088d6c14c1/basket/orders", function (data, status) {
+    $.get("https://getpantry.cloud/apiv1/pantry/db23437e-debe-4373-adf0-25579ef53034/basket/orders", function (data, status) {
         const orders = data.{{ include.user_id }}Orders ?? {};
         const inputs = $('input');
         for (let i = 0; i < inputs.length; i++) {
@@ -100,7 +100,7 @@
         data["{{ include.user_id }}Orders"] = orders;
         $.ajax({
             type: "PUT",
-            url: "https://getpantry.cloud/apiv1/pantry/3434fa84-88b8-41ad-8cfb-36088d6c14c1/basket/orders",
+            url: "https://getpantry.cloud/apiv1/pantry/db23437e-debe-4373-adf0-25579ef53034/basket/orders",
             contentType: "application/json",
             data: JSON.stringify(data),
             beforeSend: () => {
