@@ -1,14 +1,14 @@
 <template>
   <div class="order-summary">
     <div class="header">
-      <h1>Order Summary</h1>
+      <h1>Zusammenfassung der Bestellungen</h1>
       <button @click="goBack" class="back-button">Back</button>
     </div>
     <table v-if="orderData">
       <thead>
       <tr>
-        <th>Item</th>
-        <th>Total</th>
+        <th>Ware</th>
+        <th class="bold">Summe</th>
         <th v-for="account in accounts" :key="account.id">{{ account.name }}</th>
       </tr>
       </thead>
@@ -20,21 +20,21 @@
             <img :src="item.image" :alt="item.name">
           </div>
         </td>
-        <td>{{ getTotalForItem(item) }}</td>
+        <td class="bold">{{ getTotalForItem(item) }}</td>
         <td v-for="account in accounts" :key="account.id">
           {{ getOrderAmountForAccount(item, account) }}
         </td>
       </tr>
       </tbody>
     </table>
-    <p v-else>Loading order data...</p>
+    <img class="loading" v-else src="/loading.gif" alt="Loading"/>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent, ref, computed, onMounted} from 'vue';
 import router from "@/router";
-import {type Account, loadAccountsFromCsv, loadItemsFromCSV, type OrderItem} from "@/backend";
+import {type Account, getOrderData, loadAccountsFromCsv, loadItemsFromCSV, type OrderItem} from "@/backend";
 
 interface Order {
   [itemId: number]: number;
@@ -47,7 +47,7 @@ interface OrderData {
 export default defineComponent({
   name: 'OrderSummary',
   setup() {
-    const orderData = ref<OrderData | null>(null);
+    const orderData = ref<Map<string, number[]> | null>(null);
     const hoveredItem = ref<OrderItem | null>(null);
     const accounts = ref<Account[]>([]);
     const items = ref<OrderItem[]>([]);
@@ -58,24 +58,21 @@ export default defineComponent({
     }
 
     const fetchOrderData = async (): Promise<void> => {
-      // Stub function to simulate fetching order data from server
-      orderData.value = {
-        1: {1: 2, 2: 1, 3: 3},
-        2: {1: 1, 2: 2, 3: 0},
-        3: {1: 3, 2: 1, 3: 2},
-      };
+      orderData.value = await getOrderData()
     };
 
     const getTotalForItem = (item: OrderItem): number => {
       if (!orderData.value) return 0;
-      return Object.values(orderData.value).reduce((total, order) => {
-        return total + (order[item.id] || 0);
-      }, 0);
+      let total = 0
+      for (const order of orderData.value.values()) {
+        total += (order[item.id - 1] || 0)
+      }
+      return total
     };
 
     const getOrderAmountForAccount = (item: OrderItem, account: Account): number => {
       if (!orderData.value) return 0;
-      return orderData.value[account.id]?.[item.id] || 0;
+      return orderData.value.get(account.name)?.[item.id - 1] || 0;
     };
 
     const showImage = (item: OrderItem): void => {
@@ -133,6 +130,10 @@ th {
   background-color: #f2f2f2;
 }
 
+.bold {
+  font-weight: bolder;
+}
+
 .item-name {
   position: relative;
   cursor: pointer;
@@ -159,5 +160,9 @@ th {
   font-size: 16px;
   cursor: pointer;
   background-color: #f2f2f2;
+}
+
+.loading {
+  max-width: 300px;
 }
 </style>

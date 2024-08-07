@@ -18,9 +18,10 @@ const router = createRouter({
             component: HomeView,
         },
         {
-            path: "/my-orders",
+            path: "/my-orders/:userName",
             name: "orders",
             component: MyOrdersView,
+            props: true,
         },
         {
             path: "/order-summary",

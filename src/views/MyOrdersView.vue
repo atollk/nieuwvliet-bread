@@ -1,69 +1,95 @@
 <template>
   <div class="my-orders">
-    <h1>My Orders</h1>
+    <h1>Meine Bestellung</h1>
     <div class="header">
-      <button @click="goBack" class="back-button">Back</button>
-      <button @click="sendOrder" class="send-order-button">Send Order</button>
+      <button @click="goBack" class="back-button">Zurück</button>
+      <button @click="sendOrder" class="send-order-button">
+        <span v-if="changeState !== 'submitting'">Bestellung abschicken</span>
+        <img v-else class="loading" src="/loading.gif" alt="Loading"/>
+      </button>
     </div>
     <table v-if="items.length > 0">
-      <thead>
-      <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Order</th>
-      </tr>
-      </thead>
       <tbody>
       <tr v-for="item in items" :key="item.id">
         <td><img :src="item.image" :alt="item.name" class="item-image"></td>
         <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
         <td class="order-column">
           <div class="order-column-content">
-            <button @click="increaseOrder(item)">+</button>
-            <span>{{ item.orderAmount }}</span>
-            <button @click="decreaseOrder(item)" :disabled="item.orderAmount <= 0">-</button>
+            <button @click="increaseOrder(item)" :disabled="item.orderAmount === undefined">+</button>
+            <span v-if="item.orderAmount !== undefined">{{ item.orderAmount }}</span>
+            <img v-else class="loading" src="/loading.gif" alt="Loading"/>
+            <button @click="decreaseOrder(item)" :disabled="item.orderAmount === undefined || item.orderAmount <= 0">-
+            </button>
           </div>
         </td>
+        <td>{{ item.description }}</td>
       </tr>
       </tbody>
     </table>
-    <p v-else>Loading items...</p>
+    <p v-else>Bitte Warten...</p>
     <div class="footer">
-      <button @click="goBack" class="back-button">Back</button>
-      <button @click="sendOrder" class="send-order-button">Send Order</button>
+      <button @click="goBack" class="back-button">Zurück</button>
+      <button @click="sendOrder" class="send-order-button">
+        <span v-if="changeState !== 'submitting'">Bestellung abschicken</span>
+        <img v-else class="loading" src="/loading.gif" alt="Loading"/>
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, onMounted} from 'vue'
+import {defineComponent, ref, onMounted, type PropType} from 'vue'
 import {useRouter} from 'vue-router'
-import {loadItemsFromCSV, type OrderItem} from "@/backend";
+import {getOrderData, loadItemsFromCSV, type OrderItem, putOrderData} from "@/backend";
 
 export default defineComponent({
   name: 'MyOrders',
-  setup() {
+  props: {
+    userName: {
+      type: String as PropType<string>,
+      required: true
+    }
+  },
+  setup(props) {
     const router = useRouter()
     const items = ref<OrderItem[]>([])
+    const changeState = ref("unchanged")
 
     const getItems = async (): Promise<void> => {
       items.value = await loadItemsFromCSV()
+      const lastOrder = (await getOrderData()).get(props.userName)
+      if (!lastOrder) {
+        console.log("No previous order found. Defaulting to 0 for all.")
+        items.value = items.value.map((orderItem) => {
+          return {...orderItem, orderAmount: 0}
+        })
+        return Promise.resolve()
+      }
+      console.log(lastOrder)
+      items.value = items.value.map((orderItem) => {
+        return {...orderItem, orderAmount: lastOrder[orderItem.id - 1]}
+      })
+      console.log(items.value)
     }
 
     const sendOrder = async (): Promise<void> => {
-      console.log('Sending order to server...')
-      console.log(items.value.map(item => ({id: item.id, amount: item.orderAmount})))
-      // Here you would typically make an API call to send the order
+      const oldChangeState = changeState.value
+      changeState.value = "submitting"
+      try {
+        await putOrderData(props.userName, items.value.map((item) => item.orderAmount ?? 0))
+        changeState.value = "unchanged"
+      } catch (error) {
+        changeState.value = oldChangeState
+      }
     }
 
     const increaseOrder = (item: OrderItem): void => {
-      item.orderAmount++
+      if (item.orderAmount !== undefined)
+        item.orderAmount++
     }
 
     const decreaseOrder = (item: OrderItem): void => {
-      if (item.orderAmount > 0) {
+      if (item.orderAmount !== undefined && item.orderAmount > 0) {
         item.orderAmount--
       }
     }
@@ -81,7 +107,8 @@ export default defineComponent({
       increaseOrder,
       decreaseOrder,
       sendOrder,
-      goBack
+      goBack,
+      changeState,
     }
   }
 })
@@ -139,6 +166,10 @@ th {
   span {
     font-size: larger;
   }
+}
+
+.loading {
+  width: 24px;
 }
 
 .header {

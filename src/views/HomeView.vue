@@ -1,10 +1,11 @@
 <template>
   <div class="home-page">
-    <h1>Welcome, {{ user.name }}!</h1>
+    <h1>Hallo, {{ user.name }}!</h1>
     <nav>
-      <router-link to="/my-orders" class="nav-link">My Orders</router-link>
-      <router-link to="/order-summary" class="nav-link">Order Summary</router-link>
-      <a href="#" @click.prevent="logout" class="nav-link">Log Out</a>
+      <router-link :to="{ name: 'orders', params: { userName: user.name } }" class="nav-link">Meine Bestellung
+      </router-link>
+      <router-link to="/order-summary" class="nav-link">Bestell-Übersicht</router-link>
+      <a href="#" @click.prevent="logout" class="nav-link">Nutzer wechseln</a>
     </nav>
   </div>
 </template>
@@ -17,7 +18,8 @@ export default {
   name: 'HomePage',
   setup() {
     const router = useRouter()
-    const user = ref({name: ''})
+    // TODO: dummy value?
+    const user = ref({name: 'foo'})
 
     const logout = () => {
       // Remove the login cookie
