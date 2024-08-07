@@ -2,7 +2,7 @@
   <div class="order-summary">
     <div class="header">
       <h1>Zusammenfassung der Bestellungen</h1>
-      <button @click="goBack" class="back-button">Back</button>
+        <button @click="goBack" class="back-button">Zurück</button>
     </div>
     <table v-if="orderData">
       <thead>
@@ -108,6 +108,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .order-summary {
   max-width: 1200px;
   margin: 0 auto;

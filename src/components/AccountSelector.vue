@@ -11,10 +11,7 @@ export default {
   props: {
     account: {
       type: Object,
-      required: true,
-      validator: (account) => {
-        return account.id && account.name && account.picture;
-      }
+        required: true
     }
   }
 }

@@ -73,7 +73,7 @@ nav {
 
 .nav-link {
   padding: 10px 20px;
-  background-color: #4CAF5010;
+    background-color: #3C7F4080;
   color: white;
   text-decoration: none;
   border-radius: 5px;

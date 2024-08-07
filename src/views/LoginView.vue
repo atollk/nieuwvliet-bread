@@ -1,8 +1,7 @@
 <template>
   <div class="login-page">
-    <h1>Login</h1>
+      <h1>Wer bist du?</h1>
     <div v-if="!selectedAccountName">
-      <h2>Select an account:</h2>
       <div class="account-grid">
         <AccountSelector
             v-for="account in accounts"
@@ -22,7 +21,6 @@
 import {ref, onMounted} from 'vue'
 import {useRouter} from 'vue-router'
 import AccountSelector from "@/components/AccountSelector.vue";
-import {parse} from "csv-parse/browser/esm/sync";
 import {type Account, loadAccountsFromCsv} from "@/backend";
 
 
@@ -93,7 +91,7 @@ export default {
 
 .account-grid {
   display: grid;
-  grid-template-columns: repeat( 3, minmax(250px, 1fr) );
+    grid-template-columns: repeat( auto-fill, minmax(250px, 1fr) );
   gap: 20px;
   margin-top: 20px;
 }
