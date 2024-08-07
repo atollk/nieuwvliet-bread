@@ -1,5 +1,7 @@
 import {parse} from "csv-parse/browser/esm/sync";
 import axios from 'axios';
+import {createClient} from '@supabase/supabase-js'
+
 
 export  type RecursivePartial<T> = { [P in keyof T]?: RecursivePartial<T[P]> }
 
@@ -75,25 +77,31 @@ interface PantryBasketUser {
     orderAmounts: number[];
 }
 
-const PANTRY_ID = "db23437e-debe-4373-adf0-25579ef53034"
-const PANTRY_BASKET_NAME = "ordersv2"
-const PANTRY_BASKET_API_URL = `https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${PANTRY_BASKET_NAME}`
+const SUPABASE_URL = "https://mnauaygcjzxfyvwlwlxa.supabase.co"
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uYXVheWdjanp4Znl2d2x3bHhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMwNDkxNTUsImV4cCI6MjAzODYyNTE1NX0.LkRwBV5O0N64uipXuL2NdW6EWm7zYqw8NZ6fhaqoPOc"
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export async function getOrderData(): Promise<Map<string, number[]>> {
-    const response = (await axios.get<PantryBasket>(PANTRY_BASKET_API_URL)).data
+    const response = await supabase.from("orders").select("userName, itemId, count")
+    if (response.data === null)
+        return Promise.reject("response is null")
     const result = new Map<string, number[]>()
-    for (const userName in response.userOrders) {
-        result.set(userName, response.userOrders[userName].orderAmounts)
+    for (const row of response.data) {
+        if (!result.has(row.userName))
+            result.set(row.userName, [])
+        const order = result.get(row.userName)!
+        while (order.length <= row.itemId - 1)
+            order.push(0)
+        order[row.itemId - 1] = row.count
+        result.set(row.userName, order)
     }
     return result
 }
 
-export async function putOrderData(userName: string, orderAmounts: number[]): Promise<Map<string, number[]>> {
-    const request = <PantryBasket>{userOrders: {[userName]: {userName, orderAmounts}}}
-    const response = (await axios.put<PantryBasket>(PANTRY_BASKET_API_URL, request)).data
-    const result = new Map<string, number[]>()
-    for (const userName in response.userOrders) {
-        result.set(userName, response.userOrders[userName].orderAmounts)
+export async function putOrderData(userName: string, orderAmounts: number[]): Promise<void> {
+    const rows = []
+    for (let i = 0; i < orderAmounts.length; i++) {
+        rows.push({userName, itemId: i + 1, count: orderAmounts[i]})
     }
-    return result
+    await Promise.all(rows.map((row) => supabase.from("orders").upsert(row)))
 }
