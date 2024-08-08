@@ -55,7 +55,7 @@ export async function loadItemsFromCSV(): Promise<OrderItem[]> {
         return rows.map(({i, name, description}) => {
                 return <OrderItem>{
                     id: parseInt(i),
-                    image: `/assets/goods/b${i}.png`,
+                    image: `assets/goods/b${i}.png`,
                     name,
                     description,
                     orderAmount: undefined,
@@ -66,15 +66,6 @@ export async function loadItemsFromCSV(): Promise<OrderItem[]> {
         console.error('Error loading CSV:', error);
         return Promise.reject('Error loading CSV:' + error);
     }
-}
-
-export interface PantryBasket {
-    userOrders: { [key: string]: PantryBasketUser }
-}
-
-interface PantryBasketUser {
-    userName: string;
-    orderAmounts: number[];
 }
 
 const SUPABASE_URL = "https://mnauaygcjzxfyvwlwlxa.supabase.co"
