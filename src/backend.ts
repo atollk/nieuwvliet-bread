@@ -13,7 +13,7 @@ export interface Account {
 
 export async function loadAccountsFromCsv(): Promise<Account[]> {
     try {
-        const response = await fetch('/users.csv');
+        const response = await fetch(`${import.meta.env.BASE_URL}/users.csv`);
         const csvText = await response.text();
         const rows: { i: number; name: string; picture: string; }[] = parse(csvText, {
             columns: true,
@@ -45,7 +45,7 @@ export interface OrderItem {
 
 export async function loadItemsFromCSV(): Promise<OrderItem[]> {
     try {
-        const response = await fetch('/goods.csv');
+        const response = await fetch(`${import.meta.env.BASE_URL}/goods.csv`);
         const csvText = await response.text();
         const rows: { i: string; name: string; description: string; }[] = parse(csvText, {
             columns: true,
