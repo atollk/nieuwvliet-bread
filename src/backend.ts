@@ -55,7 +55,7 @@ export async function loadItemsFromCSV(): Promise<OrderItem[]> {
         return rows.map(({i, name, description}) => {
                 return <OrderItem>{
                     id: parseInt(i),
-                    image: `assets/goods/b${i}.png`,
+                    image: `${import.meta.env.BASE_URL}/assets/goods/b${i}.png`,
                     name,
                     description,
                     orderAmount: undefined,
