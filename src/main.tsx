@@ -1,44 +1,20 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import './index.css'
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from "react-router-dom";
 import {HomeView} from "./components/HomeView.tsx";
 import {LoginScreen} from "./components/LoginScreen.tsx";
-
-/*
-        {
-            path: "/my-orders/:userName",
-            name: "orders",
-            component: MyOrdersView,
-            props: true,
-        },
-        {
-            path: "/order-summary",
-            name: "order-summary",
-            component: OrderSummaryView,
-        }
- */
+import {Route, Router} from "wouter";
+import {UserOrders} from "./components/UserOrders.tsx";
+import {OrderSummary} from "./components/OrderSummary.tsx";
 
 // TODO: redirect to login if no cookie
-const router = createBrowserRouter([
-        {
-            path: "/",
-            element: <LoginScreen/>,
-        },
-        {
-            path: "/home",
-            element: <HomeView/>,
-        },
-    ]
-);
-
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <>
-            <RouterProvider router={router}/>
-        </>
+        <Router>
+            <Route path="/" component={LoginScreen}/>
+            <Route path="/home" component={HomeView}/>
+            <Route path="/orders/:userName" component={(props) => UserOrders(props.params.userName)}/>
+            <Route path="/order-summary" component={OrderSummary}/>
+        </Router>
     </StrictMode>,
 )

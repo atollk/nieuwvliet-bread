@@ -1,71 +1,40 @@
 import {JSX, useEffect, useState} from "react";
 import {Account} from "../backend.ts";
+import {Link, useLocation} from "wouter";
+import Cookies from "js-cookie";
 
 export function HomeView(): JSX.Element {
     const [user, setUser] = useState<Account>()
+    const [, navigate] = useLocation()
 
-    console.log("X")
+    function logout(): void {
+        Cookies.remove("selectedAccount")
+        navigate("/")
+    }
+
+    useEffect(() => {
+        const cookieValue = Cookies.get("selectedAccount")
+
+        if (cookieValue) {
+            setUser(JSON.parse(cookieValue))
+        } else {
+            navigate("/")
+        }
+
+        console.log(user)
+    }, []);
+
+    if (user === undefined)
+        return <></>
 
     return (
         <div>
-            <h1>Hallo, {user?.name}!</h1>
+            <h1>Hallo, {user.name}!</h1>
+            <nav>
+                <Link to={`/orders/${user.name}`}>Meine Bestellung</Link>
+                <Link to="/order-summary">Bestellübersicht</Link>
+                <a href="#" onClick={logout}>Nutzer wechseln</a>
+            </nav>
         </div>
     )
 }
-
-/*
-<template>
-    <div class="home-page">
-        <h1>Hallo, {{ user.name }}!</h1>
-        <nav>
-            <router-link :to="{ name: 'orders', params: { userName: user.name } }" class="nav-link">Meine Bestellung
-            </router-link>
-            <router-link to="/order-summary" class="nav-link">Bestell-Übersicht</router-link>
-            <a href="#" @click.prevent="logout" class="nav-link">Nutzer wechseln</a>
-        </nav>
-    </div>
-</template>
-
-<script lang="ts">
-import {ref, onMounted} from 'vue'
-import {useRouter} from 'vue-router'
-
-export default {
-    name: 'HomePage',
-    setup() {
-        const router = useRouter()
-        // TODO: dummy value?
-        const user = ref({name: 'foo'})
-
-        const logout = () => {
-            // Remove the login cookie
-            document.cookie = 'selectedAccount=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-            // Redirect to login page
-            router.push('/')
-        }
-
-        const getUserFromCookie = () => {
-            const cookieValue = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('selectedAccount'))
-            if (cookieValue) {
-                const accountData = JSON.parse(cookieValue.split('=')[1])
-                user.value = {name: accountData}
-            } else {
-                // If no cookie found, redirect to login
-                router.push("/")
-            }
-        }
-
-        onMounted(() => {
-            getUserFromCookie()
-        })
-
-        return {
-            user,
-            logout
-        }
-    }
-}
-</script>
- */
