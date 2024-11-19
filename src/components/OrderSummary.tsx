@@ -1,16 +1,22 @@
-import {JSX, useState} from "react";
-import {Account, OrderItem} from "../backend.ts";
+import {JSX, useEffect, useState} from "react";
+import {Account, OrderItem} from "../backend/data.ts";
+import {useLocation} from "wouter";
+import {loadAccountsFromCsv, loadItemsFromCSV} from "../backend/static.ts";
+import {getOrderData} from "../backend/supabase.ts";
 
 
 export function OrderSummary(): JSX.Element {
-    const [orderData,] = useState<Map<string, number[]> | undefined>()
-    const [accounts,] = useState<Account[]>([])
-    const [items,] = useState<OrderItem[]>([])
+    const [orderData, setOrderData] = useState<Map<string, number[]> | undefined>()
+    const [accounts, setAccounts] = useState<Account[]>([])
+    const [items, setItems] = useState<OrderItem[]>([])
+    const [hoveredItem, ]
+
+    const [, navigate] = useLocation()
 
     const getCellValue = (item?: OrderItem, account?: Account): number => {
-        if (!orderData.value) return 0;
+        if (!orderData) return 0;
         let total = 0
-        for (const [k, v] of orderData.value.entries()) {
+        for (const [k, v] of orderData.entries()) {
             if (account !== undefined && account.name !== k) continue
             if (item === undefined) {
                 total += v.reduce((a, b) => a + b, 0)
@@ -22,16 +28,27 @@ export function OrderSummary(): JSX.Element {
     }
 
     const showImage = (item: OrderItem): void => {
-        hoveredItem.value = item;
+        //hoveredItem.value = item;
     };
 
     const hideImage = (): void => {
-        hoveredItem.value = null;
+        //hoveredItem.value = null;
     };
 
-    const goBack = (): void => {
-        router.push('/')
+    function goBack(): void {
+        navigate("/home")
     }
+
+    async function onMount(): Promise<void> {
+        setAccounts(await loadAccountsFromCsv())
+        setItems(await loadItemsFromCSV())
+        setOrderData(await getOrderData())
+    }
+
+    useEffect(() => {
+        onMount().then()
+    }, []);
+
 
     return (
         <>

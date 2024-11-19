@@ -1,7 +1,8 @@
 import {JSX, useEffect, useState} from "react";
-import {Account, loadAccountsFromCsv} from "../backend.ts";
 import {useLocation} from "wouter";
 import Cookies from 'js-cookie'
+import {Account} from "../backend/data.ts";
+import {loadAccountsFromCsv} from "../backend/static.ts";
 
 export function LoginScreen(): JSX.Element {
     const [, setSelectedAccountName] = useState<string | undefined>(undefined)
@@ -15,7 +16,6 @@ export function LoginScreen(): JSX.Element {
     }
 
     async function onMount(): Promise<void> {
-        console.log("onMount")
         const cookieValue = Cookies.get("selectedAccount")
 
         if (cookieValue === undefined) {

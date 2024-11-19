@@ -1,39 +1,47 @@
 import {JSX, useEffect, useState} from "react";
-import {getOrderData, loadItemsFromCSV, OrderItem} from "../backend.ts";
 import {useLocation} from "wouter";
+import {OrderItem} from "../backend/data.ts";
+import {loadItemsFromCSV} from "../backend/static.ts";
+import {getOrderData, putOrderData} from "../backend/supabase.ts";
+import {DeepReadonly} from "ts-essentials";
 
-type ChangeState = 'submitting' | 'unchanged'
+type ChangeState = 'submitting' | 'unchanged' | 'changed'
 
 export function UserOrders(userName: string): JSX.Element {
-    const [changeState,] = useState<ChangeState>("unchanged")
-    const [items, setItems] = useState<OrderItem[]>([])
-    const [,navigate] = useLocation()
+    const [changeState, setChangeState] = useState<ChangeState>("unchanged")
+    const [items, setItems] = useState<DeepReadonly<ReadonlyArray<OrderItem>>>([])
+    const [, navigate] = useLocation()
 
     const getItems = async (): Promise<void> => {
-        setItems(await loadItemsFromCSV())
+        let itemsTmp = await loadItemsFromCSV()
         const lastOrder = (await getOrderData()).get(userName)
         if (!lastOrder) {
             console.log("No previous order found. Defaulting to 0 for all.")
-            setItems(items.map((item) => ({...item, orderAmount: 0})))
-            return Promise.resolve()
+            itemsTmp = itemsTmp.map((item) => ({...item, orderAmount: 0}))
+        } else {
+            itemsTmp = itemsTmp.map((item) => ({...item, orderAmount: lastOrder[item.id - 1]}))
         }
-        setItems(items.map((item) => ({...item, orderAmount: lastOrder[item.id - 1]})))
+        setItems(itemsTmp)
+        return Promise.resolve()
     }
 
     function goBack(): void {
         navigate("/home")
     }
 
-    function sendOrder(): void {
-        // TODO
+    async function sendOrder(): Promise<void> {
+        const oldChangeState = changeState
+        setChangeState("submitting")
+        try {
+            await putOrderData(userName, items.map((item) => item.orderAmount ?? 0))
+            setChangeState("unchanged")
+        } catch (error) {
+            setChangeState(oldChangeState)
+        }
     }
 
-    function decreaseOrder(item: OrderItem): void {
-        // TODO
-    }
-
-    function increaseOrder(item: OrderItem): void {
-        // TODO
+    function updateItem(newItem: OrderItem): void {
+        setItems(items.map((item) => item.id == newItem.id ? newItem : item))
     }
 
     useEffect(() => {
@@ -65,24 +73,8 @@ export function UserOrders(userName: string): JSX.Element {
                     : (
                         <div>
                             {
-                                items.map((item) =>
-                                    <div>
-                                        <img src={item.image} alt={item.name}/>
-                                        <div>
-                                            <p>{item.name}</p>
-                                            <div>
-                                                <button onClick={() => decreaseOrder(item)}>-</button>
-                                                {
-                                                    item.orderAmount === undefined
-                                                        ? <img src="/loading.gif" alt="Loading"/>
-                                                        : <span>{item.orderAmount}</span>
-                                                }
-                                                <button onClick={() => increaseOrder(item)}>+</button>
-                                            </div>
-                                            <p>{item.description}</p>
-                                        </div>
-                                    </div>
-                                )
+                                items.map((item) => <ItemOrder item={item} updateItem={updateItem}
+                                                               setChangeState={setChangeState}/>)
                             }
                         </div>
                     )
@@ -93,101 +85,42 @@ export function UserOrders(userName: string): JSX.Element {
     )
 }
 
-/*
-<template>
-    <div class="my-orders">
-        <div class="footer">
-            <button @click="goBack" class="back-button">Zurück</button>
-            <button @click="sendOrder" class="send-order-button">
-                <span v-if="changeState !== 'submitting'">Bestellung abschicken</span>
-                <img v-else class="loading" src="/loading.gif" alt="Loading"/>
-            </button>
-        </div>
-    </div>
-</template>
-
-<script lang="ts">
-import {defineComponent, ref, onMounted, type PropType} from 'vue'
-import {onBeforeRouteLeave, useRouter} from 'vue-router'
-import {getOrderData, loadItemsFromCSV, type OrderItem, putOrderData} from "@/backend";
-
-export default defineComponent({
-    name: 'MyOrders',
-    props: {
-        userName: {
-            type: String as PropType<string>,
-            required: true
-        }
-    },
-    setup(props) {
-        const router = useRouter()
-        const items = ref<OrderItem[]>([])
-        const changeState = ref("unchanged")
-
-        onBeforeRouteLeave((to, from) => {
-            if (changeState.value !== "unchanged") {
-                const answer = window.confirm("Du hast noch ungespeicherte Änderungen. Möchtest du die Seite wirklich verlassen?")
-                if (!answer) return false
-            }
-        })
-
-        const getItems = async (): Promise<void> => {
-            items.value = await loadItemsFromCSV()
-            const lastOrder = (await getOrderData()).get(props.userName)
-            if (!lastOrder) {
-                console.log("No previous order found. Defaulting to 0 for all.")
-                items.value = items.value.map((orderItem) => {
-                    return {...orderItem, orderAmount: 0}
-                })
-                return Promise.resolve()
-            }
-            items.value = items.value.map((orderItem) => {
-                return {...orderItem, orderAmount: lastOrder[orderItem.id - 1]}
-            })
-        }
-
-        const sendOrder = async (): Promise<void> => {
-            const oldChangeState = changeState.value
-            changeState.value = "submitting"
-            try {
-                await putOrderData(props.userName, items.value.map((item) => item.orderAmount ?? 0))
-                changeState.value = "unchanged"
-            } catch (error) {
-                changeState.value = oldChangeState
-            }
-        }
-
-        const increaseOrder = (item: OrderItem): void => {
-            if (item.orderAmount !== undefined) {
-                item.orderAmount++
-                changeState.value = "changed"
-            }
-        }
-
-        const decreaseOrder = (item: OrderItem): void => {
-            if (item.orderAmount !== undefined && item.orderAmount > 0) {
-                item.orderAmount--
-                changeState.value = "changed"
-            }
-        }
-
-        const goBack = (): void => {
-            router.push('/')
-        }
-
-        onMounted(() => {
-            getItems()
-        })
-
-        return {
-            items,
-            increaseOrder,
-            decreaseOrder,
-            sendOrder,
-            goBack,
-            changeState,
+function ItemOrder(props: {
+    item: OrderItem,
+    updateItem: (newItem: OrderItem) => void,
+    setChangeState: (value: ChangeState) => void
+}): JSX.Element {
+    function decreaseOrder(item: OrderItem): void {
+        if (item.orderAmount !== undefined) {
+            props.updateItem({...item, orderAmount: item.orderAmount - 1})
+            props.setChangeState("changed")
         }
     }
-})
-</script>
- */
+
+    // https://github.com/microsoft/TypeScript/pull/58296
+    function increaseOrder(item: OrderItem): void {
+        if (item.orderAmount !== undefined) {
+            props.updateItem({...item, orderAmount: item.orderAmount + 1})
+            props.setChangeState("changed")
+        }
+    }
+
+    return (
+        <div key={props.item.id}>
+            <img src={props.item.image} alt={props.item.name}/>
+            <div>
+                <p>{props.item.name}</p>
+                <div>
+                    <button onClick={() => decreaseOrder(props.item)}>-</button>
+                    {
+                        props.item.orderAmount === undefined
+                            ? <img src="/loading.gif" alt="Loading"/>
+                            : <span>{props.item.orderAmount}</span>
+                    }
+                    <button onClick={() => increaseOrder(props.item)}>+</button>
+                </div>
+                <p>{props.item.description}</p>
+            </div>
+        </div>
+    )
+}

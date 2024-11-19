@@ -1,7 +1,7 @@
 import {JSX, useEffect, useState} from "react";
-import {Account} from "../backend.ts";
 import {Link, useLocation} from "wouter";
 import Cookies from "js-cookie";
+import {Account} from "../backend/data.ts";
 
 export function HomeView(): JSX.Element {
     const [user, setUser] = useState<Account>()
@@ -20,8 +20,6 @@ export function HomeView(): JSX.Element {
         } else {
             navigate("/")
         }
-
-        console.log(user)
     }, []);
 
     if (user === undefined)
