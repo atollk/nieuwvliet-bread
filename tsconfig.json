@@ -1,0 +1,19 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "types": [
+      "vite/client"
+    ]
+  }
+}
