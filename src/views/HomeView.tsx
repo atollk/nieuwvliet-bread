@@ -1,37 +1,42 @@
 import Cookies from "js-cookie";
 import {Account} from "../backend/data.ts";
-import {onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+import {A, AccountSelector} from "../components/AccountSelector.tsx";
 
-export function HomeView(): JSX.Element {
-    const user = ref<Account>()
-    const [, navigate] = useLocation()
+export const HomeView = defineComponent({
+    setup() {
+        const user = ref<Account>()
+        const router = useRouter()
 
-    const logout = (): void => {
-        Cookies.remove("selectedAccount")
-        navigate("/")
-    };
+        const logout = async () => {
+            Cookies.remove("selectedAccount")
+            await router.replace("/")
+        };
 
-    onMounted(() => {
-        const cookieValue = Cookies.get("selectedAccount")
+        onMounted(async () => {
+            const cookieValue = Cookies.get("selectedAccount")
 
-        if (cookieValue) {
-            user.value = JSON.parse(cookieValue)
-        } else {
-            navigate("/")
-        }
-    })
+            if (cookieValue) {
+                user.value = JSON.parse(cookieValue)
+            } else {
+                await router.replace("/")
+            }
+        })
 
-    if (user === undefined)
-        return <></>
+        if (user === undefined)
+            return <></>
 
-    return (
-        <div>
-            <h1>Hallo, {user.value?.name}!</h1>
-            <nav>
-                <Link to={`/orders/${user.name}`}>Meine Bestellung</Link>
-                <Link to="/order-summary">Bestellübersicht</Link>
-                <a href="#" onClick={logout}>Nutzer wechseln</a>
-            </nav>
-        </div>
-    )
-}
+        const account = {} as Account
+        const selectAccount = () => {}
+
+        return () => (
+            <div>
+                <h1>Hallo, {user.value?.name}!</h1>
+                <nav>
+                    <a href="#" onClick={logout}>Nutzer wechseln</a>
+                </nav>
+            </div>
+        )
+    }
+})
