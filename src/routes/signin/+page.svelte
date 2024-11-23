@@ -1,5 +1,4 @@
 <script lang="ts">
-    import AccountSelector from "@/routes/signin/AccountSelector.svelte";
     import Cookies from 'js-cookie'
     import {goto} from "$app/navigation";
     import {onMount} from "svelte";
@@ -21,16 +20,17 @@
 </script>
 
 <div class="login-page">
-    <h1>Wer bist du?</h1>
+    <h1 class="text-3xl text-center my-6">Wer bist du?</h1>
     {#if !accountSelected}
-        <div>
-            <div>
-                {#await accountsPromise then accounts}
-                    {#each accounts as account (account.id)}
-                        <AccountSelector account={account} onAccountSelected={selectAccount}/>
-                    {/each}
-                {/await}
-            </div>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] auto-rows-fr grid-flow-dense gap-4 max-w-screen-2xl mx-auto">
+            {#await accountsPromise then accounts}
+                {#each accounts as account (account.id)}
+                    <button class="text-2xl text-center" onclick={() => selectAccount(account)}>
+                        <span>{account.name}</span>
+                        <img src={account.picture} alt={account.name} class="w-full">
+                    </button>
+                {/each}
+            {/await}
         </div>
     {:else}
         <div>
