@@ -3,4 +3,6 @@
 	let { children } = $props();
 </script>
 
-{@render children()}
+<div data-sveltekit-preload-data="false">
+    {@render children()}
+</div>

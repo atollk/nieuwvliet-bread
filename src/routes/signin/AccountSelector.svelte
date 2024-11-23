@@ -1,5 +1,6 @@
 <script lang="ts">
-    import {type Account} from "@/backend";
+
+    import type {Account} from "@/backend/types";
 
     const props: {
         account: Account,
@@ -7,7 +8,7 @@
     } = $props()
 </script>
 
-<button class="account-selector" onclick={() => props.onAccountSelected(props.account)}>
-    <span class="account-name">{props.account.name}</span>
+<button onclick={() => props.onAccountSelected(props.account)}>
+    <span>{props.account.name}</span>
     <img src={props.account.picture} alt={props.account.name} class="profile-picture">
 </button>

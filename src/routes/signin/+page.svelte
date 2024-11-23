@@ -1,16 +1,17 @@
 <script lang="ts">
     import AccountSelector from "@/routes/signin/AccountSelector.svelte";
-    import {type Account, loadAccountsFromCsv} from "@/backend";
     import Cookies from 'js-cookie'
     import {goto} from "$app/navigation";
     import {onMount} from "svelte";
+    import type {Account} from "@/backend/types";
+    import {loadAccountsFromCsv} from "@/backend/static";
 
-    let selectedAccountName = $state<string>()
+    let accountSelected = $state<boolean>(false)
     let accountsPromise = $state<Promise<Account[]>>(new Promise(() => []))
 
     const selectAccount = (account: Account) => {
-        selectedAccountName = account.name
-        Cookies.set("selectedAccount", JSON.stringify(account.name), {expires: 30})
+        accountSelected = true
+        Cookies.set("selectedAccount", JSON.stringify(account), {expires: 30})
         goto("/home")
     }
 
@@ -21,9 +22,9 @@
 
 <div class="login-page">
     <h1>Wer bist du?</h1>
-    {#if !selectedAccountName}
+    {#if !accountSelected}
         <div>
-            <div class="account-grid">
+            <div>
                 {#await accountsPromise then accounts}
                     {#each accounts as account (account.id)}
                         <AccountSelector account={account} onAccountSelected={selectAccount}/>
@@ -33,7 +34,7 @@
         </div>
     {:else}
         <div>
-            <p>Logging in as {{selectedAccountName}}...</p>
+            <p>Logging in...</p>
         </div>
     {/if}
 </div>
