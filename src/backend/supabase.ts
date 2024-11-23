@@ -36,6 +36,5 @@ export async function putOrderData(userName: string, orderAmounts: number[]): Pr
     for (let i = 0; i < orderAmounts.length; i++) {
         rows.push({userName, itemId: i + 1, count: orderAmounts[i]})
     }
-    console.log(rows)
     await Promise.all(rows.map((row) => supabase.from("orders").upsert(row)))
 }

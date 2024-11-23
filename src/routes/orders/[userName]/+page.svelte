@@ -1,7 +1,7 @@
 <script lang="ts">
     import {beforeNavigate, goto} from "$app/navigation";
     import {onMount} from "svelte";
-    import { page } from '$app/stores';
+    import {page} from '$app/stores';
     import type {OrderItem} from "@/backend/types";
     import {loadItemsFromCSV} from "@/backend/static";
     import {getOrderData, putOrderData} from "@/backend/supabase";
@@ -63,50 +63,50 @@
 </script>
 
 {#snippet headerFooter()}
-    <div>
-        <button onclick={() => {goto("/home")}}>Zurück
-        </button>
-        <button onclick={sendOrder}>
+    <div class="flex justify-between w-full">
+        <button class="btn variant-filled-primary mx-6" onclick={() => {goto("/home")}}>Zurück</button>
+        <button class="btn variant-filled-primary mx-6" onclick={sendOrder}>
             {#if changeState !== 'submitting'}
                 <span>Bestellung abschicken</span>
             {:else}
-                <img src="/loading.gif" alt="Loading"/>
+                <img class="w-8 h-8" src="/loading.gif" alt="Loading"/>
             {/if}
         </button>
     </div>
 {/snippet}
 
-<div class="my-orders">
-    <h1>Meine Bestellung</h1>
-    {@render headerFooter()}
-    {#if items.length === 0}
-        <p>Bitte Warten...</p>
-    {:else}
-        <div>
-            {#each items as item (item.id)}
-                <div>
-                    <div>
-                        <img src={item.image} alt={item.name}>
-                        <div>
-                            <p>{item.name}</p>
-                            <div>
-                                <button onclick={() => decreaseOrder(item)}
+<div class="flex flex-row justify-center items-center mb-8">
+    <div class="flex flex-col items-center gap-8 max-w-4xl">
+        <h1 class="text-4xl my-8">Meine Bestellung</h1>
+        {@render headerFooter()}
+        {#if items.length === 0}
+            <p>Bitte Warten...</p>
+        {:else}
+            <div class="flex flex-col items-center gap-6">
+                {#each items as item (item.id)}
+                    <div class="card variant-soft-surface flex flex-row gap-6 items-center px-6">
+                        <img class="w-32 h-fit" src={item.image} alt={item.name}>
+                        <div class="flex flex-col gap-3 my-2">
+                            <p class="font-bold">{item.name}</p>
+                            <div class="flex flex-row items-center gap-2">
+                                <button class="btn py-1 px-3 variant-soft" onclick={() => decreaseOrder(item)}
                                         disabled={item.orderAmount === undefined || item.orderAmount <= 0}>-
                                 </button>
                                 {#if item.orderAmount !== undefined}
                                     <span>{item.orderAmount}</span>
                                 {:else}
-                                    <img src="/loading.gif" alt="Loading"/>
+                                    <img class="w-8 h-8" src="/loading.gif" alt="Loading"/>
                                 {/if}
-                                <button onclick={() =>increaseOrder(item)} disabled={item.orderAmount === undefined}>+
+                                <button class="btn py-1 px-3 variant-soft" onclick={() =>increaseOrder(item)}
+                                        disabled={item.orderAmount === undefined}>+
                                 </button>
                             </div>
-                            <p class="item-desc">{item.description}</p>
+                            <p>{item.description}</p>
                         </div>
                     </div>
-                </div>
-            {/each}
-        </div>
-    {/if}
-    {@render headerFooter()}
+                {/each}
+            </div>
+        {/if}
+        {@render headerFooter()}
+    </div>
 </div>

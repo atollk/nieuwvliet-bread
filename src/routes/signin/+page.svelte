@@ -25,10 +25,12 @@
         <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] auto-rows-fr grid-flow-dense gap-4 max-w-screen-2xl mx-auto">
             {#await accountsPromise then accounts}
                 {#each accounts as account (account.id)}
-                    <button class="text-2xl text-center" onclick={() => selectAccount(account)}>
-                        <span>{account.name}</span>
-                        <img src={account.picture} alt={account.name} class="w-full">
-                    </button>
+                    <div class="card card-hover flex justify-center px-8 py-4">
+                        <button class="text-2xl text-center" onclick={() => selectAccount(account)}>
+                            <span>{account.name}</span>
+                            <img src={account.picture} alt={account.name} class="w-full grayscale-[70%] hover:grayscale-0">
+                        </button>
+                    </div>
                 {/each}
             {/await}
         </div>
