@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - svelte # TODO
 
 jobs:
   build_site:
