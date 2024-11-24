@@ -18,10 +18,16 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm install
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
       - name: build
-        env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
         run: npm run build
+      - name: Debug build output
+        run: |
+          echo "Build directory contents:"
+          ls -la build/
+          echo "\nRecursive build directory structure:"
+            find build/ -type f
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:

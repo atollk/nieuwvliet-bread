@@ -5,6 +5,7 @@
     import type {OrderItem} from "@/backend/types";
     import {loadItemsFromCSV} from "@/backend/static";
     import {getOrderData, putOrderData} from "@/backend/supabase";
+    import {base} from "$app/paths";
 
     const userName = $page.params.userName
 
@@ -64,12 +65,12 @@
 
 {#snippet headerFooter()}
     <div class="flex justify-between w-full">
-        <button class="btn variant-filled-primary mx-6" onclick={() => {goto("/home")}}>Zurück</button>
+        <button class="btn variant-filled-primary mx-6" onclick={() => {goto(`${base}/home`)}}>Zurück</button>
         <button class="btn variant-filled-primary mx-6" onclick={sendOrder}>
             {#if changeState !== 'submitting'}
                 <span>Bestellung abschicken</span>
             {:else}
-                <img class="w-8 h-8" src="/loading.gif" alt="Loading"/>
+                <img class="w-8 h-8" src="{base}/loading.gif" alt="Loading"/>
             {/if}
         </button>
     </div>
@@ -95,7 +96,7 @@
                                 {#if item.orderAmount !== undefined}
                                     <span>{item.orderAmount}</span>
                                 {:else}
-                                    <img class="w-8 h-8" src="/loading.gif" alt="Loading"/>
+                                    <img class="w-8 h-8" src="{base}/loading.gif" alt="Loading"/>
                                 {/if}
                                 <button class="btn py-1 px-3 variant-soft" onclick={() =>increaseOrder(item)}
                                         disabled={item.orderAmount === undefined}>+

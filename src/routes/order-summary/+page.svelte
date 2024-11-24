@@ -3,6 +3,7 @@
     import type {Account, OrderItem} from "@/backend/types";
     import {getOrderData} from "@/backend/supabase";
     import {loadAccountsFromCsv, loadItemsFromCSV} from "@/backend/static";
+    import {base} from "$app/paths";
 
     interface FetchData {
         orderData: Map<string, number[]>
@@ -47,7 +48,7 @@
 <div class="table-container flex flex-col items-center gap-8">
     <h1 class="h1 mt-8">Zusammenfassung der Bestellungen</h1>
     {#await fetchDataPromise}
-        <img class="w-32" src="/loading.gif" alt="Loading"/>
+        <img class="w-32" src="{base}/loading.gif" alt="Loading"/>
     {:then fetchData}
         <table class="table table-hover max-w-4xl">
             <thead>
@@ -92,5 +93,5 @@
     {:catch error}
         {error}
     {/await}
-    <button class="btn variant-filled-primary" onclick={() => goto("/home")}>Zurück</button>
+    <button class="btn variant-filled-primary" onclick={() => goto(`${base}/home`)}>Zurück</button>
 </div>

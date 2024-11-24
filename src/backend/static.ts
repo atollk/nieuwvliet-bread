@@ -1,9 +1,10 @@
 import {parse} from "csv-parse/browser/esm/sync";
 import type {Account, OrderItem} from "@/backend/types";
+import {base} from "$app/paths";
 
 export async function loadAccountsFromCsv(): Promise<Account[]> {
     try {
-        const response = await fetch(`/users.csv`);
+        const response = await fetch(`${base}/users.csv`);
         const csvText = await response.text();
         const rows: { i: number; name: string; picture: string; }[] = parse(csvText, {
             columns: true,
@@ -14,7 +15,7 @@ export async function loadAccountsFromCsv(): Promise<Account[]> {
                 return {
                     id: i + 1,
                     name,
-                    picture: `/assets/users/${picture}`,
+                    picture: `${base}/assets/users/${picture}`,
                 };
             }
         );
@@ -26,7 +27,7 @@ export async function loadAccountsFromCsv(): Promise<Account[]> {
 
 export async function loadItemsFromCSV(): Promise<OrderItem[]> {
     try {
-        const response = await fetch(`/goods.csv`);
+        const response = await fetch(`${base}/goods.csv`);
         const csvText = await response.text();
         const rows: { i: string; name: string; description: string; }[] = parse(csvText, {
             columns: true,
@@ -36,7 +37,7 @@ export async function loadItemsFromCSV(): Promise<OrderItem[]> {
         return rows.map(({i, name, description}) => {
                 return <OrderItem>{
                     id: parseInt(i),
-                    image: `/assets/goods/b${i}.png`,
+                    image: `${base}/assets/goods/b${i}.png`,
                     name,
                     description,
                     orderAmount: undefined,

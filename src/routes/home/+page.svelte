@@ -3,12 +3,13 @@
     import {goto} from "$app/navigation";
     import {onMount} from "svelte";
     import type {Account} from "@/backend/types";
+    import {base} from "$app/paths";
 
     let user = $state<Account>()
 
     const logout = () => {
         Cookies.remove("selectedAccount")
-        goto("/")
+        goto(`${base}/`)
     }
 
     const getUserFromCookie = () => {
@@ -16,7 +17,7 @@
         if (cookieValue) {
             user = JSON.parse(cookieValue)
         } else {
-            goto("/")
+            goto(`${base}/`)
         }
     }
 
@@ -30,8 +31,8 @@
     <h1 class="text-2xl">Hallo, {user?.name}!</h1>
     {#if user}
         <nav class="flex flex-row content-center gap-2">
-            <a class="btn variant-filled-primary" href="/orders/{user.name}">Meine Bestellung</a>
-            <a class="btn variant-filled-primary" href="/order-summary">Bestellübersicht</a>
+            <a class="btn variant-filled-primary" href="{base}/orders/{user.name}">Meine Bestellung</a>
+            <a class="btn variant-filled-primary" href="{base}/order-summary">Bestellübersicht</a>
             <a class="btn variant-filled-primary" href="#0" onclick={logout}>Nutzer wechseln</a>
         </nav>
     {/if}
