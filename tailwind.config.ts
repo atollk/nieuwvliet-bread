@@ -1,5 +1,6 @@
 import { join } from 'path';
-import type { Config } from 'tailwindcss';
+import type {Config} from 'tailwindcss';
+import plugin from "tailwindcss/plugin";
 
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
@@ -21,6 +22,12 @@ const config = {
 	plugins: [
 		skeleton({
 			themes: { preset: [ "skeleton" ] }
+		}),
+		plugin(({addVariant}) => {
+			addVariant("pointer-coarse", "@media (pointer: coarse)")
+			addVariant("pointer-fine", "@media (pointer: fine)")
+			addVariant("hover-none", "@media (hover: none)")
+			addVariant("hover-hover", "@media (hover: hover)")
 		})
 	]
 } satisfies Config;

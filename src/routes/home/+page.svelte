@@ -30,7 +30,7 @@
 <div class="flex flex-col items-center justify-center h-screen gap-4">
     <h1 class="text-2xl">Hallo, {user?.name}!</h1>
     {#if user}
-        <nav class="flex flex-row content-center gap-2">
+        <nav class="flex flex-col sm:flex-row content-center gap-2">
             <a class="btn variant-filled-primary" href="{base}/orders/{user.name}">Meine Bestellung</a>
             <a class="btn variant-filled-primary" href="{base}/order-summary">Bestellübersicht</a>
             <a class="btn variant-filled-primary" href="#0" onclick={logout}>Nutzer wechseln</a>

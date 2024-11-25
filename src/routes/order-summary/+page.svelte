@@ -45,51 +45,55 @@
     }
 </script>
 
-<div class="table-container flex flex-col items-center gap-8">
+<div class="flex flex-col items-center gap-8">
     <h1 class="h1 mt-8">Zusammenfassung der Bestellungen</h1>
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading"/>
     {:then fetchData}
-        <table class="table table-hover max-w-4xl">
-            <thead>
-            <tr class="my-11">
-                <th>Ware</th>
-                <th>Summe</th>
-                <th class="w-16"></th>
-                {#each fetchData.accounts as account (account.id)}
-                    <th>{account.name}</th>
-                {/each}
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="h-2"></tr>
-            <tr>
-                <td class="italic">Summe</td>
-                <td class="text-center">{getCellValue(fetchData.orderData, undefined, undefined)}</td>
-                <td></td>
-                {#each fetchData.accounts as account (account.id)}
-                    <td class="text-center">{getCellValue(fetchData.orderData, undefined, account)}</td>
-                {/each}
-            </tr>
-            <tr class="h-2"></tr>
-            {#each fetchData.items as item (item.id)}
-                <tr>
-                    <td onmouseover={() => showImage(item)} onfocus={() => showImage(item)} onmouseout={() => hideImage(item)}
-                        onblur={() => hideImage(item)}>
-                        <span>{item.name}</span>
-                        {#if hoveredItem?.id === item.id}
-                            <img class="absolute w-32 h-auto shadow-2xl border-2 border-primary rounded-xl" src={item.image} alt={item.name}>
-                        {/if}
-                    </td>
-                    <td class="text-center">{getCellValue(fetchData.orderData, item, undefined)}</td>
-                    <td></td>
+        <div class="table-container max-w-4xl">
+            <table class="table table-hover ">
+                <thead>
+                <tr class="my-11">
+                    <th>Ware</th>
+                    <th>Summe</th>
+                    <th class="w-16"></th>
                     {#each fetchData.accounts as account (account.id)}
-                        <td class="text-center">{getCellValue(fetchData.orderData, item, account)}</td>
+                        <th>{account.name}</th>
                     {/each}
                 </tr>
-            {/each}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <tr class="h-2"></tr>
+                <tr>
+                    <td class="italic">Summe</td>
+                    <td class="text-center">{getCellValue(fetchData.orderData, undefined, undefined)}</td>
+                    <td></td>
+                    {#each fetchData.accounts as account (account.id)}
+                        <td class="text-center">{getCellValue(fetchData.orderData, undefined, account)}</td>
+                    {/each}
+                </tr>
+                <tr class="h-2"></tr>
+                {#each fetchData.items as item (item.id)}
+                    <tr>
+                        <td onmouseover={() => showImage(item)} onfocus={() => showImage(item)}
+                            onmouseout={() => hideImage(item)}
+                            onblur={() => hideImage(item)}>
+                            <span>{item.name}</span>
+                            {#if hoveredItem?.id === item.id}
+                                <img class="absolute w-32 h-auto shadow-2xl border-2 border-primary rounded-xl"
+                                     src={item.image} alt={item.name}>
+                            {/if}
+                        </td>
+                        <td class="text-center">{getCellValue(fetchData.orderData, item, undefined)}</td>
+                        <td></td>
+                        {#each fetchData.accounts as account (account.id)}
+                            <td class="text-center">{getCellValue(fetchData.orderData, item, account)}</td>
+                        {/each}
+                    </tr>
+                {/each}
+                </tbody>
+            </table>
+        </div>
     {:catch error}
         {error}
     {/await}
