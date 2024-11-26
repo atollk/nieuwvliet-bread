@@ -20,7 +20,7 @@
     })
 </script>
 
-<div class="login-page">
+<div>
     <h1 class="text-3xl text-center my-6">Wer bist du?</h1>
     {#if !accountSelected}
         <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] auto-rows-fr grid-flow-dense gap-4 max-w-screen-2xl mx-auto">
