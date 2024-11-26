@@ -6,10 +6,8 @@
     import {loadItemsFromCSV} from "@/backend/static";
     import {getOrderData, putOrderData} from "@/backend/supabase";
     import {base} from "$app/paths";
-    import {getToastStore} from "@skeletonlabs/skeleton";
 
     const userName = $page.params.userName
-    const toastStore = getToastStore();
 
     const getItems = async (): Promise<OrderItem[]> => {
         const items = await loadItemsFromCSV()
@@ -31,10 +29,10 @@
         try {
             await putOrderData(userName, items.map((item) => item.orderAmount ?? 0))
             changeState = "unchanged"
-            toastStore.trigger({
+            /*toastStore.trigger({
                 message: "Bestellung abgeschickt",
                 timeout: 3000
-            })
+            })*/
         } catch (error) {
             changeState = oldChangeState
         }
@@ -71,8 +69,8 @@
 
 {#snippet headerFooter()}
     <div class="flex justify-between w-full">
-        <button class="btn variant-filled-primary mx-6" onclick={() => {goto(`${base}/home`)}}>Zurück</button>
-        <button class="btn variant-filled-primary mx-6" onclick={sendOrder}>
+        <button class="mx-6" onclick={() => {goto(`${base}/home`)}}>Zurück</button>
+        <button class="mx-6" onclick={sendOrder}>
             {#if changeState !== 'submitting'}
                 <span>Bestellung abschicken</span>
             {:else}
@@ -91,12 +89,12 @@
         {:else}
             <div class="flex flex-col items-center gap-6">
                 {#each items as item (item.id)}
-                    <div class="card variant-soft-surface flex flex-row gap-6 items-center px-6">
+                    <div class="flex flex-row gap-6 items-center px-6">
                         <img class="w-32 h-fit" src={item.image} alt={item.name}>
                         <div class="flex flex-col gap-3 my-2">
                             <p class="font-bold">{item.name}</p>
                             <div class="flex flex-row items-center gap-2">
-                                <button class="btn py-1 px-3 variant-soft" onclick={() => decreaseOrder(item)}
+                                <button class="py-1 px-3" onclick={() => decreaseOrder(item)}
                                         disabled={item.orderAmount === undefined || item.orderAmount <= 0}>-
                                 </button>
                                 {#if item.orderAmount !== undefined}
@@ -104,7 +102,7 @@
                                 {:else}
                                     <img class="w-8 h-8" src="{base}/loading.gif" alt="Loading"/>
                                 {/if}
-                                <button class="btn py-1 px-3 variant-soft" onclick={() =>increaseOrder(item)}
+                                <button class="py-1 px-3" onclick={() =>increaseOrder(item)}
                                         disabled={item.orderAmount === undefined}>+
                                 </button>
                             </div>

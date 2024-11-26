@@ -1,5 +1,3 @@
-import {initializeStores} from "@skeletonlabs/skeleton";
-
 export const ssr = false;
 export const prerender = false;
 
