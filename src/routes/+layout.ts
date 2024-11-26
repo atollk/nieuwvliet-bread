@@ -3,7 +3,7 @@ export const prerender = false;
 
 // Handle the base path for client-side routing
 export const load = ({ url }) => {
-  return {
-    url: url.pathname
-  };
+	return {
+		url: url.pathname
+	};
 };

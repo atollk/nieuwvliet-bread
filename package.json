@@ -14,6 +14,7 @@
 		"test": "npm run test:unit -- --run"
 	},
 	"devDependencies": {
+		"@melt-ui/pp": "^0.3.2",
 		"@melt-ui/svelte": "^0.86.2",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
