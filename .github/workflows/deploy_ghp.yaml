@@ -34,6 +34,13 @@ jobs:
       run: |
         cargo install tauri-cli
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+    - name: setup Android signing
+      working-directory: src-tauri/gen/android
+      run: |
+        echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+        echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+        base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+        echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
     - name: Build APK
       run: |
         npm install
