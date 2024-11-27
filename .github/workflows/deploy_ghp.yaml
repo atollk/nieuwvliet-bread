@@ -17,7 +17,7 @@ jobs:
       uses: android-actions/setup-android@v3
     - name: Install Tauri
       run: |
-        cargo install create-tauri-app
+        cargo install tauri-cli
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     - name: Build APK
       run: cargo tauri android build
