@@ -6,6 +6,21 @@ on:
       - main
 
 jobs:
+  build_android:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    - name: Build APK
+      run: cargo tauri android build
+      #run: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+
   build_site:
     runs-on: ubuntu-latest
     steps:
@@ -32,6 +47,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'build/'
+
   deploy:
     needs: build_site
     runs-on: ubuntu-latest
