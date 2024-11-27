@@ -6,6 +6,7 @@
 	import { loadItemsFromCSV } from '@/backend/static';
 	import { getOrderData, putOrderData } from '@/backend/supabase';
 	import { base } from '$app/paths';
+	import { addToast } from '$lib/Toaster.svelte'
 
 	const userName = $page.params.userName;
 
@@ -30,10 +31,13 @@
 				items.map((item) => item.orderAmount ?? 0)
 			);
 			changeState = 'unchanged';
-			/*toastStore.trigger({
-                message: "Bestellung abgeschickt",
-                timeout: 3000
-            })*/
+			addToast({
+				data: {
+					title: "bar",
+					description: "foo",
+					color: "black",
+				}
+			})
 		} catch (error) {
 			changeState = oldChangeState;
 		}
