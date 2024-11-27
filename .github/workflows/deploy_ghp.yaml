@@ -6,6 +6,8 @@ on:
 jobs:
   build_android:
     runs-on: ubuntu-latest
+    container:
+      image: ivangabriele/tauri:debian-bullseye-18
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -16,7 +18,7 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        packages: 'ndk'
+        packages: 'NDK'
     - name: Install Tauri
       run: |
         cargo install tauri-cli
