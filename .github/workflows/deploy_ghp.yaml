@@ -25,9 +25,13 @@ jobs:
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     - name: Build APK
       run: |
+        npm install
         export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
         cargo tauri android build
-      #run: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    - name: Upload Artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: 'src-tauri/gen/android/app/build/outputs/apk/universal/release/'
 
   build_site:
     needs: build_android
