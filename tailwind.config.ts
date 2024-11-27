@@ -1,20 +1,21 @@
-import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
-import daisyui from 'daisyui';
+import type {Config} from 'tailwindcss';
+import plugin from "tailwindcss/plugin";
+
 
 const config = {
-	content: ['./src/**/*.{html,js,svelte,ts}'],
+	content: [
+		'./src/**/*.{html,js,svelte,ts}',
+	],
 	theme: {
-		extend: {}
+		extend: {},
 	},
 	plugins: [
-		plugin(({ addVariant }) => {
-			addVariant('pointer-coarse', '@media (pointer: coarse)');
-			addVariant('pointer-fine', '@media (pointer: fine)');
-			addVariant('hover-none', '@media (hover: none)');
-			addVariant('hover-hover', '@media (hover: hover)');
-		}),
-		daisyui
+		plugin(({addVariant}) => {
+			addVariant("pointer-coarse", "@media (pointer: coarse)")
+			addVariant("pointer-fine", "@media (pointer: fine)")
+			addVariant("hover-none", "@media (hover: none)")
+			addVariant("hover-hover", "@media (hover: hover)")
+		})
 	]
 } satisfies Config;
 

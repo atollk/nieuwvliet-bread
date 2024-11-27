@@ -1,9 +1,9 @@
 <script lang="ts">
-	import '../app.css';
+    import '../app.css';
 
-	let { children } = $props();
+    let {children} = $props()
 </script>
 
 <div data-sveltekit-preload-data="false">
-	{@render children()}
+    {@render children()}
 </div>
