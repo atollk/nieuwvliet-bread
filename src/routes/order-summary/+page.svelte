@@ -48,15 +48,14 @@
 	};
 </script>
 
-<div class="flex flex-col flex-wrap items-center gap-8">
+<div class="flex flex-col items-center gap-8">
 	<h1 class="h1 mt-8">Zusammenfassung der Bestellungen</h1>
 	{#await fetchDataPromise}
 		<img class="w-32" src="{base}/loading.gif" alt="Loading" />
 	{:then fetchData}
 		<div class="max-w-4xl">
-			<div class="w-full">
-				<table class="table">
-					<thead>
+			<table class="">
+				<thead>
 					<tr class="my-11">
 						<th>Ware</th>
 						<th>Summe</th>
@@ -65,8 +64,8 @@
 							<th>{account.name}</th>
 						{/each}
 					</tr>
-					</thead>
-					<tbody>
+				</thead>
+				<tbody>
 					<tr class="h-2"></tr>
 					<tr>
 						<td class="italic">Summe</td>
@@ -80,17 +79,17 @@
 					{#each fetchData.items as item (item.id)}
 						<tr>
 							<td
-									onmouseover={() => showImage(item)}
-									onfocus={() => showImage(item)}
-									onmouseout={() => hideImage(item)}
-									onblur={() => hideImage(item)}
+								onmouseover={() => showImage(item)}
+								onfocus={() => showImage(item)}
+								onmouseout={() => hideImage(item)}
+								onblur={() => hideImage(item)}
 							>
 								<span>{item.name}</span>
 								{#if hoveredItem?.id === item.id}
 									<img
-											class="absolute h-auto w-32 rounded-xl border-2 border-primary shadow-2xl"
-											src={item.image}
-											alt={item.name}
+										class="absolute h-auto w-32 rounded-xl border-2 border-primary shadow-2xl"
+										src={item.image}
+										alt={item.name}
 									/>
 								{/if}
 							</td>
@@ -101,9 +100,8 @@
 							{/each}
 						</tr>
 					{/each}
-					</tbody>
-				</table>
-			</div>
+				</tbody>
+			</table>
 		</div>
 	{:catch error}
 		{error}
