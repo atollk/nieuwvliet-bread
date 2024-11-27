@@ -50,8 +50,8 @@
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading"/>
     {:then fetchData}
-        <div class="max-w-4xl">
-            <table class="">
+        <div class="table-container max-w-4xl">
+            <table class="table table-hover ">
                 <thead>
                 <tr class="my-11">
                     <th>Ware</th>
@@ -97,5 +97,5 @@
     {:catch error}
         {error}
     {/await}
-    <button class="" onclick={() => goto(`${base}/home`)}>Zurück</button>
+    <button class="btn variant-filled-primary" onclick={() => goto(`${base}/home`)}>Zurück</button>
 </div>
