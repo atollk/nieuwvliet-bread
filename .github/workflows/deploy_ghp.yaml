@@ -17,8 +17,8 @@ jobs:
         distribution: 'temurin'
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-      with:
-        packages: 'NDK'
+    - name: Setup Android SDK 2
+      run: sdkmanager --install "ndk;21.3.6528147"
     - name: Install Tauri
       run: |
         cargo install tauri-cli
