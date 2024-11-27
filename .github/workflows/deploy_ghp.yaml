@@ -5,7 +5,7 @@ on:
 
 jobs:
   build_android:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container:
       image: ivangabriele/tauri:debian-bullseye-18
     steps:
@@ -18,7 +18,7 @@ jobs:
     - name: Install packages
       run: |
         apt install -y \
-          libwebkit2gtk-4.1-dev \
+# libwebkit2gtk-4.1-dev \
           build-essential \
           curl \
           wget \
