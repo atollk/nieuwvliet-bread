@@ -40,6 +40,7 @@ jobs:
       run: sdkmanager --install "ndk;27.2.12479018"
     - name: Install Tauri
       run: |
+        cargo install tauri-cli
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     - name: Build APK
       run: |
