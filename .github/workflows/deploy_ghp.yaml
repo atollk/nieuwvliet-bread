@@ -44,9 +44,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: 'github-pages'
-          path: 'artifacts/'
+          path: 'artifacts/github-pages'
       - name: Display structure of downloaded files
-        run: ls -R $GITHUB_WORKSPACE/artifacts
+        run: |
+          unzip artifacts/github-pages/artifact.tar
+          ls -R artifacts
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
