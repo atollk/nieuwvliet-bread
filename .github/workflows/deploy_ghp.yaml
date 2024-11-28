@@ -48,7 +48,7 @@ jobs:
       - name: Display structure of downloaded files
         run: |
           ls -R artifacts
-          unzip artifacts/github-pages/artifact.tar
+          tar -xvf artifacts/github-pages/artifact.tar
           ls -R artifacts
       - name: Deploy
         id: deployment
