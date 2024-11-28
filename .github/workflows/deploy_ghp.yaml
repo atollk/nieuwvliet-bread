@@ -7,7 +7,7 @@ jobs:
   build_android:
     runs-on: ubuntu-22.04
     container:
-      image: ivangabriele/tauri:debian-bullseye-18
+      image: ivangabriele/tauri:debian-bookworm-22
     steps:
     - uses: actions/checkout@v4
     - name: setup Android signing
@@ -40,7 +40,6 @@ jobs:
       run: sdkmanager --install "ndk;27.2.12479018"
     - name: Install Tauri
       run: |
-        cargo install tauri-cli
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     - name: Build APK
       run: |
