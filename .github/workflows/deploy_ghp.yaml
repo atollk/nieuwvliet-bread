@@ -73,7 +73,7 @@ jobs:
           path: 'artifacts/android-build/'
       - name: Copy APK
         run: |
-          tar -xvf artifacts/android-build/artifact.tar
+          (cd artifacts/android-build && tar -xvf artifact.tar)
           cp artifacts/android-build/app-universal-release.apk static/android.apk
       - name: Setup Pages
         uses: actions/configure-pages@v4
