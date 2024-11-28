@@ -69,13 +69,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: build
-        run: npm run build
-      - name: Debug build output
         run: |
-          echo "Build directory contents:"
-          ls -la build/
-          echo "\nRecursive build directory structure:"
-            find build/ -type f
+          npm run build
+          cp build/index.html build/404.html
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
