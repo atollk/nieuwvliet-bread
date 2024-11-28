@@ -12,11 +12,7 @@ const config = {
 			fallback: 'index.html'
 		}),
 		paths: {
-			base: process.argv.includes('dev')
-				? ''
-				: process.argv.includes('--tauri')
-					? ''
-					: '/nieuwvliet-bread'
+			base: ''
 		},
 		alias: {
 			'@': './src'
