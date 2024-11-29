@@ -58,7 +58,7 @@ jobs:
   build_site:
     needs: build_android
     runs-on: ubuntu-latest
-    if: needs.build_android.conclusion != 'failure'
+    if: always() && needs.build_android.conclusion != 'failure'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
