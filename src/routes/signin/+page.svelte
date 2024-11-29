@@ -20,9 +20,9 @@
 	});
 </script>
 
-<div class="login-page">
-	<h1 class="my-6 text-center text-3xl">Wer bist du?</h1>
+<div class="pb-16">
 	{#if !accountSelected}
+		<h1 class="h1 my-6 text-center">Wer bist du?</h1>
 		<div
 			class="mx-auto grid max-w-screen-2xl grid-flow-dense auto-rows-fr grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4"
 		>
@@ -42,8 +42,8 @@
 			{/await}
 		</div>
 	{:else}
-		<div>
-			<p>Logging in...</p>
+		<div class="flex h-[100vh] items-center justify-center">
+			<p class="h1">Logging in...</p>
 		</div>
 	{/if}
 </div>
