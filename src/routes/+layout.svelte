@@ -18,7 +18,7 @@
 	<Toast />
 	{@render children()}
 	<div class="flex justify-center gap-4 p-8">
-		{#if isTauri}
+		{#if !isTauri}
 			<a class="btn" href="{base}/android.apk">
 				<img class="w-16" src="{base}/assets/android.svg" alt="Download Android App" />
 			</a>
