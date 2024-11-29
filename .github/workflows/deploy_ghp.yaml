@@ -58,7 +58,7 @@ jobs:
   build_site:
     needs: build_android
     runs-on: ubuntu-latest
-    if: always() && needs.build_android.conclusion != 'failure'
+    if: always()  && !failure() && !cancelled()
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -95,7 +95,7 @@ jobs:
   deploy:
     needs: build_site
     runs-on: ubuntu-latest
-    if: always() && needs.build_site.conclusion == 'success'
+    if: always()  && !failure() && !cancelled()
 
     permissions:
       pages: write
