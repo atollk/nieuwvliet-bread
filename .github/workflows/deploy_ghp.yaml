@@ -5,7 +5,7 @@ on:
 
 jobs:
   build_android:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/head/android_tauri'
     runs-on: ubuntu-22.04
     container:
       image: ivangabriele/tauri:debian-bookworm-22
