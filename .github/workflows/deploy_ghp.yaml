@@ -5,6 +5,7 @@ on:
 
 jobs:
   build_android:
+    if: contains(['main'], github.ref_name)
     runs-on: ubuntu-22.04
     container:
       image: ivangabriele/tauri:debian-bookworm-22
@@ -53,9 +54,11 @@ jobs:
         name: 'android-build'
         path: 'src-tauri/gen/android/app/build/outputs/apk/universal/release/'
 
+
   build_site:
     needs: build_android
     runs-on: ubuntu-latest
+    if: needs.build_android.conclusion == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,11 +70,13 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Get APK
+        if: needs.build_android.conclusion == 'success'
         uses: actions/download-artifact@v4
         with:
           name: 'android-build'
           path: 'artifacts/android-build/'
       - name: Copy APK
+        if: needs.build_android.conclusion == 'success'
         run: |
           (cd artifacts/android-build && tar -xvf artifact.tar)
           cp artifacts/android-build/app-universal-release.apk static/android.apk
