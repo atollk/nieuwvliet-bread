@@ -30,9 +30,9 @@
 	<h1 class="text-2xl">Hallo, {user?.name}!</h1>
 	{#if user}
 		<nav class="flex flex-col content-center gap-2 sm:flex-row">
-			<a class="variant-filled-primary btn" href="{base}/orders/{user.name}">Meine Bestellung</a>
-			<a class="variant-filled-primary btn" href="{base}/order-summary">Bestellübersicht</a>
-			<a class="variant-filled-primary btn" href="#0" onclick={logout}>Nutzer wechseln</a>
+			<a class="preset-filled-primary-500 btn" href="{base}/orders/{user.name}">Meine Bestellung</a>
+			<a class="preset-filled-primary-500 btn" href="{base}/order-summary">Bestellübersicht</a>
+			<a class="preset-filled-primary-500 btn" href="#0" onclick={logout}>Nutzer wechseln</a>
 		</nav>
 	{/if}
 </div>

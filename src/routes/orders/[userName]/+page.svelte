@@ -75,12 +75,12 @@
 {#snippet headerFooter()}
 	<div class="flex w-full justify-between">
 		<button
-			class="variant-filled-primary btn mx-6"
+			class="btn preset-filled-primary-500 mx-6"
 			onclick={() => {
 				goto(`${base}/home`);
 			}}>Zurück</button
 		>
-		<button class="variant-filled-primary btn mx-6" onclick={sendOrder}>
+		<button class="preset-filled-primary-500 btn mx-6" onclick={sendOrder}>
 			{#if changeState !== 'submitting'}
 				<span>Bestellung abschicken</span>
 			{:else}

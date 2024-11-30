@@ -11,7 +11,7 @@ const config = {
 	},
 	plugins: [
 		skeleton({
-			themes: [themes.legacy, themes.rose]
+			themes: [themes.legacy, themes.mint]
 		}),
 		plugin(({ addVariant }) => {
 			addVariant('pointer-coarse', '@media (pointer: coarse)');

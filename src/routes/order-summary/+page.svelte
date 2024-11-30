@@ -106,5 +106,5 @@
 	{:catch error}
 		{error}
 	{/await}
-	<button class="variant-filled-primary btn" onclick={() => goto(`${base}/home`)}>Zurück</button>
+	<button class="preset-filled-primary-500 btn" onclick={() => goto(`${base}/home`)}>Zurück</button>
 </div>
