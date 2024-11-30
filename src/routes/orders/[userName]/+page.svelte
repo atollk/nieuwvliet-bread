@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import {getContext, onMount} from 'svelte';
 	import { page } from '$app/stores';
 	import type { OrderItem } from '@/backend/types';
 	import { loadItemsFromCSV } from '@/backend/static';
 	import { getOrderData, putOrderData } from '@/backend/supabase';
 	import { base } from '$app/paths';
-	import { getToastStore } from '@skeletonlabs/skeleton';
+	import type {ToastContext} from "@skeletonlabs/skeleton-svelte";
 
 	const userName = $page.params.userName;
-	const toastStore = getToastStore();
+	const toast: ToastContext = getContext('toast');
 
 	const getItems = async (): Promise<OrderItem[]> => {
 		const items = await loadItemsFromCSV();
@@ -32,9 +32,9 @@
 				items.map((item) => item.orderAmount ?? 0)
 			);
 			changeState = 'unchanged';
-			toastStore.trigger({
-				message: 'Bestellung abgeschickt',
-				timeout: 3000
+			toast.create({
+				title: 'Bestellung abgeschickt',
+				duration: 3000,
 			});
 		} catch (error) {
 			changeState = oldChangeState;
