@@ -4,6 +4,8 @@
     import isTauri from "$lib/tauri";
     import { onMount } from "svelte";
     import { themeChange } from "theme-change";
+    import ToastProvider from "$lib/ToastProvider.svelte";
+    import {addToast} from "$lib/ToastProviderUtils.svelte";
 
     let x = $state(0);
 
@@ -19,14 +21,8 @@
 </script>
 
 <div data-sveltekit-preload-data="false">
-    <div class="toast toast-center toast-top">
-        {#each Array(x).keys() as i}
-            <div class="alert alert-info">
-                <span>{i}</span>
-            </div>
-        {/each}
-    </div>
-    <button onclick={() => (x += 1)}>XXX</button>
+    <ToastProvider/>
+    <button onclick={() => addToast("a")}>XXX</button>
     {@render children()}
     <div class="flex justify-center gap-4 p-8">
         {#if !isTauri}
