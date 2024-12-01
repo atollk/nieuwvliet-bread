@@ -15,7 +15,15 @@
 
     const { options }: { options: ToastOptions } = $props()
 
-    const alertClass = $derived(`alert-${options.type}`)
+    const alertClass = $derived(
+        options.type === "info"
+            ? "alert-info"
+            : options.type === "success"
+              ? "alert-success"
+              : options.type === "warning"
+                ? "alert-warning"
+                : "alert-error",
+    )
 
     const Icon =
         options.type == "info"

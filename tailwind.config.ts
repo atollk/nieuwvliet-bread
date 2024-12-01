@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss"
 import plugin from "tailwindcss/plugin"
+import typography from "@tailwindcss/typography"
 import daisyui, { type Config as DaisyUiConfig } from "daisyui"
 
 const config = {
@@ -8,6 +9,7 @@ const config = {
         extend: {},
     },
     plugins: [
+        typography,
         daisyui,
         plugin(({ addVariant }) => {
             addVariant("pointer-coarse", "@media (pointer: coarse)")

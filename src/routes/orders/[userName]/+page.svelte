@@ -34,7 +34,7 @@
             addToast({
                 text: "Bestellung abgeschickt",
                 type: "success",
-                duration: 0,
+                duration: 2500,
             })
         } catch (error) {
             changeState = oldChangeState
@@ -72,15 +72,16 @@
     })
 </script>
 
+
 {#snippet headerFooter()}
     <div class="flex w-full justify-between">
         <button
-            class="variant-filled-primary btn mx-6"
+            class="btn btn-primary mx-6"
             onclick={() => {
                 goto(`${base}/home`)
             }}>Zurück</button
         >
-        <button class="variant-filled-primary btn mx-6" onclick={sendOrder}>
+        <button class="btn btn-primary mx-6" onclick={sendOrder}>
             {#if changeState !== "submitting"}
                 <span>Bestellung abschicken</span>
             {:else}
@@ -105,7 +106,7 @@
                             <p class="font-bold">{item.name}</p>
                             <div class="flex flex-row items-center gap-2">
                                 <button
-                                    class="variant-soft btn px-3 py-1"
+                                    class="btn btn-sm btn-circle btn-primary"
                                     onclick={() => decreaseOrder(item)}
                                     disabled={item.orderAmount === undefined ||
                                         item.orderAmount <= 0}
@@ -117,7 +118,7 @@
                                     <img class="h-8 w-8" src="{base}/loading.gif" alt="Loading" />
                                 {/if}
                                 <button
-                                    class="variant-soft btn px-3 py-1"
+                                    class="btn btn-sm btn-circle btn-primary px-3 py-1"
                                     onclick={() => increaseOrder(item)}
                                     disabled={item.orderAmount === undefined}
                                     >+

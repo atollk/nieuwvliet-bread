@@ -22,13 +22,13 @@
 
 <div class="pb-16">
     {#if !accountSelected}
-        <h1 class="h1 my-6 text-center">Wer bist du?</h1>
+        <h1 class="my-6 text-center text-5xl">Wer bist du?</h1>
         <div
             class="mx-auto grid max-w-screen-2xl grid-flow-dense auto-rows-fr grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4"
         >
             {#await accountsPromise then accounts}
                 {#each accounts as account (account.id)}
-                    <div class="card-hover card flex justify-center px-8 py-4">
+                    <div class="flex bg-base-200 border-neutral border-2 rounded-xl justify-center px-8 py-4 hover:scale-105 transform transition">
                         <button class="text-center text-2xl" onclick={() => selectAccount(account)}>
                             <span>{account.name}</span>
                             <img
