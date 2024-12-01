@@ -1,21 +1,22 @@
 <script lang="ts">
 	import '../app.css';
-	import { autoModeWatcher, initializeStores, Toast } from '@skeletonlabs/skeleton';
-	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import isTauri from '$lib/tauri';
 
+	let x = 0;
+
 	let { children } = $props();
-
-	initializeStores();
-
-	onMount(() => {
-		autoModeWatcher();
-	});
 </script>
 
 <div data-sveltekit-preload-data="false">
-	<Toast />
+	<div class="toast toast-top toast-center">
+		{#each { length: x } as i}
+			<div class="alert alert-info">
+				<span>{i}</span>
+			</div>
+		{/each}
+	</div>
+	<button onclick={() => (x += 1)}>XXX</button>
 	{@render children()}
 	<div class="flex justify-center gap-4 p-8">
 		{#if !isTauri}
