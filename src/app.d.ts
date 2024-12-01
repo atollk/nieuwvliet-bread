@@ -1,3 +1,5 @@
+import "unplugin-icons/types/svelte"
+
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
@@ -10,8 +12,8 @@ declare global {
     }
 
     interface Window {
-        __TAURI_INTERNALS__: Record<string, unknown>;
+        __TAURI_INTERNALS__: Record<string, unknown>
     }
 }
 
-export {};
+export {}

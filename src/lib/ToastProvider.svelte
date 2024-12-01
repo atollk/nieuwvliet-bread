@@ -1,13 +1,44 @@
-<script lang="ts">
-    import {getToasts} from "$lib/ToastProviderUtils.svelte.js";
+<script lang="ts" module>
+    import { SvelteMap } from "svelte/reactivity"
+    import type { ToastOptions as ComponentOptions } from "./Toast.svelte"
 
-    const toasts = getToasts()
+    let toastsCounter = 0
+    const toasts = $state(new SvelteMap<number, ComponentOptions>())
+
+    interface ToastOptions {
+        type: "info" | "success" | "warning" | "error"
+        text: string
+        duration: number
+        hasCloseButton: boolean
+    }
+
+    const addToastOptionsDefault: ToastOptions = {
+        type: "info",
+        text: "",
+        duration: 0,
+        hasCloseButton: false,
+    }
+
+    export function addToast(options: Partial<ToastOptions>): void {
+        const id = toastsCounter
+        const optionsComplete = {
+            ...addToastOptionsDefault,
+            ...options,
+            onClose: () => {
+                toasts.delete(id)
+            },
+        } satisfies ComponentOptions
+        toastsCounter += 1
+        toasts.set(id, optionsComplete)
+    }
 </script>
 
-<div class="toast toast-end">
-    {#each toasts as toast}
-        <div class="alert">
-            <span>{toast}</span>
-        </div>
+<script lang="ts">
+    import Toast from "$lib/Toast.svelte"
+</script>
+
+<div class="toast toast-end items-end z-10">
+    {#each toasts.values() as toastOptions}
+        <Toast options={toastOptions} />
     {/each}
 </div>

@@ -1,73 +1,75 @@
 <script lang="ts">
-    import { beforeNavigate, goto } from "$app/navigation";
-    import { onMount } from "svelte";
-    import { page } from "$app/stores";
-    import type { OrderItem } from "@/backend/types";
-    import { loadItemsFromCSV } from "@/backend/static";
-    import { getOrderData, putOrderData } from "@/backend/supabase";
-    import { base } from "$app/paths";
+    import { beforeNavigate, goto } from "$app/navigation"
+    import { onMount } from "svelte"
+    import { page } from "$app/stores"
+    import type { OrderItem } from "@/backend/types"
+    import { loadItemsFromCSV } from "@/backend/static"
+    import { getOrderData, putOrderData } from "@/backend/supabase"
+    import { base } from "$app/paths"
+    import { addToast } from "$lib/ToastProvider.svelte"
 
-    const userName = $page.params.userName;
+    const userName = $page.params.userName
 
     const getItems = async (): Promise<OrderItem[]> => {
-        const items = await loadItemsFromCSV();
-        const lastOrder = (await getOrderData()).get(userName);
+        const items = await loadItemsFromCSV()
+        const lastOrder = (await getOrderData()).get(userName)
         if (!lastOrder) {
-            console.log("No previous order found. Defaulting to 0 for all.");
-            for (let item of items) item.orderAmount = 0;
+            console.log("No previous order found. Defaulting to 0 for all.")
+            for (let item of items) item.orderAmount = 0
         } else {
-            for (let item of items) item.orderAmount = lastOrder[item.id - 1];
+            for (let item of items) item.orderAmount = lastOrder[item.id - 1]
         }
-        return items;
-    };
+        return items
+    }
 
     const sendOrder = async (): Promise<void> => {
-        const oldChangeState = changeState;
-        changeState = "submitting";
+        const oldChangeState = changeState
+        changeState = "submitting"
         try {
             await putOrderData(
                 userName,
                 items.map((item) => item.orderAmount ?? 0),
-            );
-            changeState = "unchanged";
-            /*toastStore.trigger({
-				message: 'Bestellung abgeschickt',
-				timeout: 3000
-			});*/
+            )
+            changeState = "unchanged"
+            addToast({
+                text: "Bestellung abgeschickt",
+                type: "success",
+                duration: 0,
+            })
         } catch (error) {
-            changeState = oldChangeState;
+            changeState = oldChangeState
         }
-    };
+    }
 
     const increaseOrder = (item: OrderItem): void => {
         if (item.orderAmount !== undefined) {
-            item.orderAmount++;
-            changeState = "changed";
+            item.orderAmount++
+            changeState = "changed"
         }
-    };
+    }
 
     const decreaseOrder = (item: OrderItem): void => {
         if (item.orderAmount !== undefined && item.orderAmount > 0) {
-            item.orderAmount--;
-            changeState = "changed";
+            item.orderAmount--
+            changeState = "changed"
         }
-    };
+    }
 
-    let items = $state<OrderItem[]>([]);
-    let changeState = $state<"unchanged" | "changed" | "submitting">("unchanged");
+    let items = $state<OrderItem[]>([])
+    let changeState = $state<"unchanged" | "changed" | "submitting">("unchanged")
 
     onMount(() => {
-        getItems().then((x) => (items = x));
-    });
+        getItems().then((x) => (items = x))
+    })
 
     beforeNavigate((navigation) => {
         if (changeState !== "unchanged") {
             const answer = window.confirm(
                 "Du hast noch ungespeicherte Änderungen. Möchtest du die Seite wirklich verlassen?",
-            );
-            if (!answer) return navigation.cancel();
+            )
+            if (!answer) return navigation.cancel()
         }
-    });
+    })
 </script>
 
 {#snippet headerFooter()}
@@ -75,7 +77,7 @@
         <button
             class="variant-filled-primary btn mx-6"
             onclick={() => {
-                goto(`${base}/home`);
+                goto(`${base}/home`)
             }}>Zurück</button
         >
         <button class="variant-filled-primary btn mx-6" onclick={sendOrder}>

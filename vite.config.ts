@@ -1,10 +1,16 @@
-import { defineConfig } from "vitest/config";
-import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vitest/config"
+import { sveltekit } from "@sveltejs/kit/vite"
+import Icons from "unplugin-icons/vite"
 
-const host = process.env.TAURI_DEV_HOST;
+const host = process.env.TAURI_DEV_HOST
 
 export default defineConfig({
-    plugins: [sveltekit()],
+    plugins: [
+        sveltekit(),
+        Icons({
+            compiler: "svelte",
+        }),
+    ],
 
     test: {
         include: ["src/**/*.{test,spec}.{js,ts}"],
@@ -31,4 +37,4 @@ export default defineConfig({
             ignored: ["**/src-tauri/**"],
         },
     },
-});
+})
