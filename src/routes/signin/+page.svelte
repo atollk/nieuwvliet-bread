@@ -22,7 +22,7 @@
 
 <div class="pb-16">
     {#if !accountSelected}
-        <h1 class="my-6 text-center text-5xl">Wer bist du?</h1>
+        <h1 class="h1 my-6 text-center">Wer bist du?</h1>
         <div
             class="mx-auto grid max-w-screen-2xl grid-flow-dense auto-rows-fr grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4"
         >
