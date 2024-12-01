@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import type { Account, OrderItem } from "@/backend/types";
-    import { getOrderData } from "@/backend/supabase";
-    import { loadAccountsFromCsv, loadItemsFromCSV } from "@/backend/static";
-    import { base } from "$app/paths";
+    import { goto } from "$app/navigation"
+    import type { Account, OrderItem } from "@/backend/types"
+    import { getOrderData } from "@/backend/supabase"
+    import { loadAccountsFromCsv, loadItemsFromCSV } from "@/backend/static"
+    import { base } from "$app/paths"
 
     interface FetchData {
-        orderData: Map<string, number[]>;
-        accounts: Account[];
-        items: OrderItem[];
+        orderData: Map<string, number[]>
+        accounts: Account[]
+        items: OrderItem[]
     }
 
     const getFetchData = async (): Promise<FetchData> => {
@@ -16,36 +16,36 @@
             orderData: await getOrderData(),
             accounts: await loadAccountsFromCsv(),
             items: await loadItemsFromCSV(),
-        };
-    };
+        }
+    }
 
-    let fetchDataPromise = $state<Promise<FetchData>>(getFetchData());
-    let hoveredItem = $state<OrderItem | undefined>();
+    let fetchDataPromise = $state<Promise<FetchData>>(getFetchData())
+    let hoveredItem = $state<OrderItem | undefined>()
 
     const getCellValue = (
         orderData: Map<string, number[]>,
         item?: OrderItem,
         account?: Account,
     ): number => {
-        let total = 0;
+        let total = 0
         for (const [k, v] of orderData.entries()) {
-            if (account !== undefined && account.name !== k) continue;
+            if (account !== undefined && account.name !== k) continue
             if (item === undefined) {
-                total += v.reduce((a, b) => a + b, 0);
+                total += v.reduce((a, b) => a + b, 0)
             } else {
-                total += v[item.id - 1];
+                total += v[item.id - 1]
             }
         }
-        return total;
-    };
+        return total
+    }
 
     const showImage = (item: OrderItem): void => {
-        hoveredItem = item;
-    };
+        hoveredItem = item
+    }
 
     const hideImage = (item: OrderItem): void => {
-        if (hoveredItem?.id === item.id) hoveredItem = undefined;
-    };
+        if (hoveredItem?.id === item.id) hoveredItem = undefined
+    }
 </script>
 
 <div class="flex flex-col items-center gap-8">

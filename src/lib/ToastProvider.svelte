@@ -37,7 +37,7 @@
     import Toast from "$lib/Toast.svelte"
 </script>
 
-<div class="toast toast-end items-end z-10">
+<div class="toast toast-end z-10 items-end">
     {#each toasts.values() as toastOptions}
         <Toast options={toastOptions} />
     {/each}

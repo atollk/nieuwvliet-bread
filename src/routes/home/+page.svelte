@@ -1,29 +1,29 @@
 <script lang="ts">
-    import Cookies from "js-cookie";
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
-    import type { Account } from "@/backend/types";
-    import { base } from "$app/paths";
+    import Cookies from "js-cookie"
+    import { goto } from "$app/navigation"
+    import { onMount } from "svelte"
+    import type { Account } from "@/backend/types"
+    import { base } from "$app/paths"
 
-    let user = $state<Account>();
+    let user = $state<Account>()
 
     const logout = () => {
-        Cookies.remove("selectedAccount");
-        goto(`${base}/`);
-    };
+        Cookies.remove("selectedAccount")
+        goto(`${base}/`)
+    }
 
     const getUserFromCookie = () => {
-        const cookieValue = Cookies.get("selectedAccount");
+        const cookieValue = Cookies.get("selectedAccount")
         if (cookieValue) {
-            user = JSON.parse(cookieValue);
+            user = JSON.parse(cookieValue)
         } else {
-            goto(`${base}/`);
+            goto(`${base}/`)
         }
-    };
+    }
 
     onMount(() => {
-        getUserFromCookie();
-    });
+        getUserFromCookie()
+    })
 </script>
 
 <div class="flex h-screen flex-col items-center justify-center gap-4">

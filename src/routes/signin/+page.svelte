@@ -1,23 +1,23 @@
 <script lang="ts">
-    import Cookies from "js-cookie";
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
-    import type { Account } from "@/backend/types";
-    import { loadAccountsFromCsv } from "@/backend/static";
-    import { base } from "$app/paths";
+    import Cookies from "js-cookie"
+    import { goto } from "$app/navigation"
+    import { onMount } from "svelte"
+    import type { Account } from "@/backend/types"
+    import { loadAccountsFromCsv } from "@/backend/static"
+    import { base } from "$app/paths"
 
-    let accountSelected = $state<boolean>(false);
-    let accountsPromise = $state<Promise<Account[]>>(new Promise(() => []));
+    let accountSelected = $state<boolean>(false)
+    let accountsPromise = $state<Promise<Account[]>>(new Promise(() => []))
 
     const selectAccount = (account: Account) => {
-        accountSelected = true;
-        Cookies.set("selectedAccount", JSON.stringify(account), { expires: 30 });
-        goto(`${base}/home`);
-    };
+        accountSelected = true
+        Cookies.set("selectedAccount", JSON.stringify(account), { expires: 30 })
+        goto(`${base}/home`)
+    }
 
     onMount(() => {
-        accountsPromise = loadAccountsFromCsv();
-    });
+        accountsPromise = loadAccountsFromCsv()
+    })
 </script>
 
 <div class="pb-16">
