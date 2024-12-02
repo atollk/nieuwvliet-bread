@@ -2,13 +2,7 @@
     import "../app.css"
     import { base } from "$app/paths"
     import isTauri from "$lib/tauri"
-    import { onMount } from "svelte"
-    import { themeChange } from "theme-change"
     import ToastProvider from "$lib/ToastProvider.svelte"
-
-    onMount(() => {
-        themeChange(false)
-    })
 
     let { children } = $props()
 </script>
