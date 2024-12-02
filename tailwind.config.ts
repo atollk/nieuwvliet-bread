@@ -21,6 +21,7 @@ const config = {
     daisyui: {
         logs: false,
         themes: ["light", "dark"],
+        darkTheme: "dark",
     } satisfies DaisyUiConfig,
     darkMode: "media",
 } satisfies Config

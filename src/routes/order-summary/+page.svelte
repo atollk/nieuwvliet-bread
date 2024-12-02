@@ -48,7 +48,7 @@
     }
 </script>
 
-<div class="flex flex-col items-center gap-8">
+<div class="flex flex-col flex-wrap items-center gap-8">
     <h1 class="h1 mt-8">Zusammenfassung der Bestellungen</h1>
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading" />

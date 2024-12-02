@@ -7,6 +7,7 @@
     import { getOrderData, putOrderData } from "@/backend/supabase"
     import { base } from "$app/paths"
     import { addToast } from "$lib/ToastProvider.svelte"
+    import OrderItemCard from "@/routes/orders/[userName]/OrderItemCard.svelte"
 
     const userName = $page.params.userName
 
@@ -40,17 +41,13 @@
             changeState = oldChangeState
         }
     }
-
-    const increaseOrder = (item: OrderItem): void => {
-        if (item.orderAmount !== undefined) {
-            item.orderAmount++
-            changeState = "changed"
-        }
-    }
-
-    const decreaseOrder = (item: OrderItem): void => {
-        if (item.orderAmount !== undefined && item.orderAmount > 0) {
-            item.orderAmount--
+    
+    const changeOrder = (item: OrderItem, delta: number): void => {
+        if (item.orderAmount === undefined)
+            return
+        const newAmount = Math.max(0, item.orderAmount + delta)
+        if (newAmount !== item.orderAmount) {
+            item.orderAmount = newAmount
             changeState = "changed"
         }
     }
@@ -72,7 +69,6 @@
     })
 </script>
 
-
 {#snippet headerFooter()}
     <div class="flex w-full justify-between">
         <button
@@ -92,41 +88,15 @@
 {/snippet}
 
 <div class="mb-8 flex flex-row items-center justify-center">
-    <div class="flex max-w-4xl flex-col items-center gap-8">
+    <div class="flex max-w-3xl flex-col items-center gap-8">
         <h1 class="my-8 text-4xl">Meine Bestellung</h1>
         {@render headerFooter()}
         {#if items.length === 0}
             <p>Bitte Warten...</p>
         {:else}
-            <div class="flex flex-col items-center gap-6">
+            <div class="flex flex-col items-center gap-4">
                 {#each items as item (item.id)}
-                    <div class="variant-soft-surface card flex flex-row items-center gap-6 px-6">
-                        <img class="h-fit w-32" src={item.image} alt={item.name} />
-                        <div class="my-2 flex flex-col gap-3">
-                            <p class="font-bold">{item.name}</p>
-                            <div class="flex flex-row items-center gap-2">
-                                <button
-                                    class="btn btn-sm btn-circle btn-primary"
-                                    onclick={() => decreaseOrder(item)}
-                                    disabled={item.orderAmount === undefined ||
-                                        item.orderAmount <= 0}
-                                    >-
-                                </button>
-                                {#if item.orderAmount !== undefined}
-                                    <span>{item.orderAmount}</span>
-                                {:else}
-                                    <img class="h-8 w-8" src="{base}/loading.gif" alt="Loading" />
-                                {/if}
-                                <button
-                                    class="btn btn-sm btn-circle btn-primary px-3 py-1"
-                                    onclick={() => increaseOrder(item)}
-                                    disabled={item.orderAmount === undefined}
-                                    >+
-                                </button>
-                            </div>
-                            <p>{item.description}</p>
-                        </div>
-                    </div>
+                    <OrderItemCard {item} changeOrder={(n) => changeOrder(item, n)} />
                 {/each}
             </div>
         {/if}

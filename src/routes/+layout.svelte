@@ -4,7 +4,7 @@
     import isTauri from "$lib/tauri"
     import { onMount } from "svelte"
     import { themeChange } from "theme-change"
-    import ToastProvider, { addToast } from "$lib/ToastProvider.svelte"
+    import ToastProvider from "$lib/ToastProvider.svelte"
 
     onMount(() => {
         themeChange(false)
