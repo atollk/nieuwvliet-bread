@@ -69,13 +69,13 @@ jobs:
             - name: Install dependencies
               run: npm install
             - name: Get APK
-              if: needs.build_android.conclusion == 'success'
+              if: success()
               uses: actions/download-artifact@v4
               with:
                   name: "android-build"
                   path: "artifacts/android-build/"
             - name: Copy APK
-              if: needs.build_android.conclusion == 'success'
+              if: success()
               run: |
                   (cd artifacts/android-build && tar -xvf artifact.tar)
                   cp artifacts/android-build/app-universal-release.apk static/android.apk
