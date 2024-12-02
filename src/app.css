@@ -1,3 +1,27 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+
+@layer base {
+  h1 {
+    @apply text-5xl;
+    @apply font-extrabold;
+  }
+  h2 {
+    @apply text-4xl;
+    @apply font-bold;
+  }
+  h3 {
+    @apply text-3xl;
+    @apply font-bold;
+  }
+  h4 {
+    @apply text-2xl;
+    @apply font-bold;
+  }
+  h5 {
+    @apply text-xl;
+    @apply font-bold;
+  }
+}
