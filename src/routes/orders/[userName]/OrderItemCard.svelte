@@ -37,6 +37,6 @@
                 +
             </button>
         </div>
-        <p>{item.description}</p>
+        <p class="prose text-sm sm:text-base">{item.description}</p>
     </div>
 </div>

@@ -53,7 +53,7 @@
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading" />
     {:then fetchData}
-        <div class="table-container max-w-4xl">
+        <div class="table-container max-w-4xl w-[100vw] overflow-auto">
             <table class="table-hover table">
                 <thead>
                     <tr class="my-11">
