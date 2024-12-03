@@ -14,7 +14,8 @@ const config = {
         paths: {
             base: process.argv.includes("dev")
                 ? ""
-                : process.argv.includes("--tauri")
+                : process.argv.includes("--tauri") ||
+                    process.argv.map((arg) => arg.includes("prerender.js")).includes(true)
                   ? ""
                   : "/nieuwvliet-bread",
         },
