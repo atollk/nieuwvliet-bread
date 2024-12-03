@@ -9,18 +9,16 @@ const config = {
 
     kit: {
         adapter: adapter({
-            fallback: "index.html",
+            fallback: "404.html",
         }),
         paths: {
-            base: process.argv.includes("dev")
-                ? ""
-                : process.argv.includes("--tauri") ||
-                    process.argv.map((arg) => arg.includes("prerender.js")).includes(true)
-                  ? ""
-                  : "/nieuwvliet-bread",
+            base: "",
         },
         alias: {
             "@": "./src",
+        },
+        prerender: {
+            handleHttpError: "fail",
         },
     },
 }
