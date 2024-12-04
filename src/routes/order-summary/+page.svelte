@@ -53,7 +53,12 @@
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading" />
     {:then fetchData}
-        <div class="table-container max-w-4xl w-[100vw] overflow-auto">
+        <!--TODO: Hack to load all item images at the start.-->
+        {#each fetchData.items as item}
+            <img class="hidden" src={item.image} alt={item.name} />
+        {/each}
+
+        <div class="table-container relative w-[100vw] max-w-4xl overflow-x-auto">
             <table class="table-hover table">
                 <thead>
                     <tr class="my-11">
@@ -67,7 +72,7 @@
                 </thead>
                 <tbody>
                     <tr class="h-2"></tr>
-                    <tr>
+                    <tr class="bg-base-200">
                         <td class="italic">Summe</td>
                         <td class="text-center"
                             >{getCellValue(fetchData.orderData, undefined, undefined)}</td
@@ -81,7 +86,7 @@
                     </tr>
                     <tr class="h-2"></tr>
                     {#each fetchData.items as item (item.id)}
-                        <tr>
+                        <tr class="odd:bg-base-200 even:bg-base-300">
                             <td
                                 onmouseover={() => showImage(item)}
                                 onfocus={() => showImage(item)}
@@ -91,7 +96,7 @@
                                 <span>{item.name}</span>
                                 {#if hoveredItem?.id === item.id}
                                     <img
-                                        class="absolute h-auto w-32 rounded-xl border-2 border-primary shadow-2xl"
+                                        class="fixed h-auto w-32 rounded-xl border-2 border-primary shadow-2xl"
                                         src={item.image}
                                         alt={item.name}
                                     />

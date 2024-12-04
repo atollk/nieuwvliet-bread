@@ -41,10 +41,9 @@
             changeState = oldChangeState
         }
     }
-    
+
     const changeOrder = (item: OrderItem, delta: number): void => {
-        if (item.orderAmount === undefined)
-            return
+        if (item.orderAmount === undefined) return
         const newAmount = Math.max(0, item.orderAmount + delta)
         if (newAmount !== item.orderAmount) {
             item.orderAmount = newAmount

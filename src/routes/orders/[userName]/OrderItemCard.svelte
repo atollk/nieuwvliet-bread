@@ -15,7 +15,7 @@
 >
     <img class="h-fit w-32" src={item.image} alt={item.name} />
     <div class="my-2 flex flex-col gap-3">
-        <p class="font-bold text-lg">{item.name}</p>
+        <p class="text-lg font-bold">{item.name}</p>
         <div class="flex flex-row items-center gap-4">
             <button
                 class="btn btn-circle btn-primary btn-sm"
