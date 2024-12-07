@@ -10,7 +10,6 @@ const config = {
     },
     plugins: [
         typography,
-        daisyui,
         plugin(({ addVariant }) => {
             addVariant("pointer-coarse", "@media (pointer: coarse)")
             addVariant("pointer-fine", "@media (pointer: fine)")
