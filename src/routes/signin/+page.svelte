@@ -29,9 +29,12 @@
             {#await accountsPromise then accounts}
                 {#each accounts as account (account.id)}
                     <div
-                        class="bg-base-200 border-neutral flex transform justify-center rounded-xl border-2 px-8 py-4 transition hover:scale-105"
+                        class="bg-base-200 border-neutral flex transform cursor-pointer justify-center rounded-xl border-2 px-8 py-4 transition hover:scale-105"
                     >
-                        <button class="text-center text-2xl" onclick={() => selectAccount(account)}>
+                        <button
+                            class="cursor-pointer text-center text-2xl"
+                            onclick={() => selectAccount(account)}
+                        >
                             <span>{account.name}</span>
                             <img
                                 src={account.picture}
