@@ -53,7 +53,7 @@
     {#await fetchDataPromise}
         <img class="w-32" src="{base}/loading.gif" alt="Loading" />
     {:then fetchData}
-        <div class="table-container max-w-4xl w-[100vw] overflow-auto">
+        <div class="table-container w-[100vw] max-w-4xl overflow-auto">
             <table class="table-hover table">
                 <thead>
                     <tr class="my-11">
@@ -91,7 +91,7 @@
                                 <span>{item.name}</span>
                                 {#if hoveredItem?.id === item.id}
                                     <img
-                                        class="absolute h-auto w-32 rounded-xl border-2 border-primary shadow-2xl"
+                                        class="border-primary absolute h-auto w-32 rounded-xl border-2 shadow-2xl"
                                         src={item.image}
                                         alt={item.name}
                                     />

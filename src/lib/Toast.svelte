@@ -39,7 +39,7 @@
     }
 </script>
 
-<div role="alert" class="alert {alertClass} w-fit flex">
+<div role="alert" class="alert {alertClass} flex w-fit">
     <Icon />
     <span>{options.text}</span>
     {#if options.hasCloseButton}
