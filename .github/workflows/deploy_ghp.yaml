@@ -74,11 +74,13 @@ jobs:
               with:
                   name: "android-build"
                   path: "artifacts/android-build/"
+              continue-on-error: true
             - name: Copy APK
               if: success()
               run: |
                   (cd artifacts/android-build && tar -xvf artifact.tar)
                   cp artifacts/android-build/app-universal-release.apk static/android.apk
+              continue-on-error: true
             - name: Setup Pages
               uses: actions/configure-pages@v4
             - name: build
