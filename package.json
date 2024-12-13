@@ -18,6 +18,7 @@
         "@sveltejs/adapter-auto": "^3.0.0",
         "@sveltejs/kit": "^2.0.0",
         "@sveltejs/vite-plugin-svelte": "^4.0.0",
+        "@tailwindcss/language-server": "^0.0.27",
         "@tailwindcss/postcss": "^4.0.0-beta.6",
         "@tailwindcss/typography": "^0.5.15",
         "@types/js-cookie": "^3.0.6",
