@@ -11,7 +11,7 @@
 </script>
 
 <div
-    class="flex transform flex-row items-center justify-center gap-4 rounded-xl border-2 border-neutral bg-base-200 px-4 py-2 transition"
+    class="border-neutral bg-base-200 flex transform flex-row items-center justify-center gap-4 rounded-xl border-2 px-4 py-2 transition"
 >
     <img class="h-fit w-32" src={item.image} alt={item.name} />
     <div class="my-2 flex flex-col gap-3">

@@ -58,7 +58,7 @@
             <img class="hidden" src={item.image} alt={item.name} />
         {/each}
 
-        <div class="table-container relative w-[100vw] max-w-4xl overflow-x-auto">
+        <div class="table-container w-[100vw] max-w-4xl overflow-auto">
             <table class="table-hover table">
                 <thead>
                     <tr class="my-11">
